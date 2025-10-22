@@ -1,6 +1,7 @@
-# Markdown Live Preview
+# JournAffinity Live Preview
 
-[Markdown Live Preview](https://markdownlivepreview.com/) is a tiny web tool to preview Markdown formatted text.
+This tool is based on another tool here:
+[Markdown Live Preview](https://markdownlivepreview.com/)
 
 ## Setup
 
