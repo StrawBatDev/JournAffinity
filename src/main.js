@@ -1,6 +1,5 @@
 import Storehouse from 'storehouse-js';
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/+esm';
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import 'github-markdown-css/github-markdown-light.css';
 
@@ -13,88 +12,81 @@ const init = () => {
     const localStorageScrollBarKey = 'scroll_bar_settings';
     const confirmationMessage = 'Are you sure you want to reset? Your changes will be lost.';
     // default template
-    const defaultInput = `# Markdown syntax guide
+    const defaultInput = `[h1]JournAffinity v1.0[/h1]
+[h2]Whats left?[/h2]
+1. Divider lines
+2. Comic navigation
+3. Text size up and down
+4. Text alignment
+5. Headers 1-5 to match documentation
+6. Quotes
+7. :linkfender: -> Creates a link to a user's page.
+8. BUTTONS!
 
-## Headers
+Hi, I am :strawbaticon: and this is an [b]WYSIWYG editor[/b] I made to help you write journals and post descriptions on Furaffinity.net!
 
-# This is a Heading h1
-## This is a Heading h2
-###### This is a Heading h6
+[h2]Dorky stuff translated for the layman:[/h2]
+[b]Furaffinity.net[/b] uses what are called [b]BBCodes[/b] for formatting text; 
+BBCode is a lightweight markup language used on many online forums and bulletin boards to format posts.
 
-## Emphasis
+What I am doing is converting these BBCodes using Regex (Shorthand for 'regular expression') and converting them into HTML (Shorthand for hypertext markup language)
+This text is then previewed using CSS (Shorthand for 'Cascading Style Sheets'), heavily inspired by Furaffinity.net's CSS circa 2025.
 
-*This text will be italic*  
-_This will also be italic_
+What you see in the preview should [i]approximate[/i] what you will see on Furaffinity.net when you post.
 
-**This text will be bold**  
-__This will also be bold__
+[h2]Sauces:[/h2]
+The BBCodes that this editor can preview have been based on this [url=https://www.furaffinity.net/journal/8342081/]journal[/url] and [url=https://www.furaffinity.net/help/#tags-and-codes]Furaffinity.net's official documentation[/url]
 
-_You **can** combine them_
+This is forked from another project here: https://markdownlivepreview.com
 
-## Lists
+[h1]Examples[/h1]
+[b]Bold[/b]
+[i]Italic[/i]
+[u]Underline[/u]
+[s]Strike-out[/s]
+(c)(tm)(r)
 
-### Unordered
+Spoiler text: [spoiler]"BOO!"[/spoiler]
+Comic navigation: [31017474, 42300460, 42402962]
+Colored text: [color=orange]Orange you glad to see me?[/color]
 
-* Item 1
-* Item 2
-* Item 2a
-* Item 2b
-    * Item 3a
-    * Item 3b
+Username only: @strawbat 
+🐭 Username: @@strawbat
+🐭 Username(Legacy)::iconstrawbat: 
+🐭::strawbaticon:
 
-### Ordered
+[sup]TEXT[/sup] Makes text Small and Up
+[sub]TEXT[/sub] Makes text Small and Bottom
 
-1. Item 1
-2. Item 2
-3. Item 3
-    1. Item 3a
-    2. Item 3b
+Links: [url=LINK]TEXT HERE[/url] 
 
-## Images
+Text Alignment:
+[left]Slide to the left![/left]
+[center]Malcom in the middle![/center]
+[right]Slide to the right![/right]
 
-![This is an alt text.](/image/sample.webp "This is a sample image.")
-
-## Links
-
-You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
-
-## Blockquotes
-
-> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
->
->> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-
-## Tables
-
-| Left columns  | Right columns |
-| ------------- |:-------------:|
-| left foo      | right foo     |
-| left bar      | right bar     |
-| left baz      | right baz     |
-
-## Blocks of code
-
-${"`"}${"`"}${"`"}
-let message = 'Hello world';
-alert(message);
-${"`"}${"`"}${"`"}
-
-## Inline code
-
-This web site is using ${"`"}markedjs/marked${"`"}.
+Combinations:
+[i][b]Kamina - "We're gonna combine!"[/b][/i]
+[b][url=https://www.youtube.com/watch?v=CzVeai1P1H0$0][color=COLORNAME]Simon - "They're going to combine?!"[/color][/url][/b]
+    
+Video links (Only in journals!)
+[yt]https://www.youtube.com/watch?v=CzVeai1P1H0[/yt]
 `;
 
     self.MonacoEnvironment = {
         getWorker(_, label) {
-            return new Proxy({}, { get: () => () => { } });
+            return new Proxy({}, {
+                get: () => () => {
+                }
+            });
         }
     }
 
     let setupEditor = () => {
         let editor = monaco.editor.create(document.querySelector('#editor'), {
             fontSize: 14,
-            language: 'markdown',
-            minimap: { enabled: false },
+            language: 'markdown', // No official support for BBCode in Monaco editor, but this is harmless
+            minimap: {enabled: false},
             scrollBeyondLastLine: false,
             automaticLayout: true,
             scrollbar: {
@@ -102,14 +94,14 @@ This web site is using ${"`"}markedjs/marked${"`"}.
                 horizontal: 'visible'
             },
             wordWrap: 'on',
-            hover: { enabled: false },
+            hover: {enabled: false},
             quickSuggestions: false,
             suggestOnTriggerCharacters: false,
             folding: false
         });
 
         editor.onDidChangeModelContent(() => {
-            let changed = editor.getValue() != defaultInput;
+            let changed = editor.getValue() !== defaultInput;
             if (changed) {
                 hasEdited = true;
             }
@@ -138,15 +130,102 @@ This web site is using ${"`"}markedjs/marked${"`"}.
         return editor;
     };
 
-    // Render markdown text as html
-    let convert = (markdown) => {
-        let options = {
-            headerIds: false,
-            mangle: false
-        };
-        let html = marked.parse(markdown, options);
-        let sanitized = DOMPurify.sanitize(html);
-        document.querySelector('#output').innerHTML = sanitized;
+    // TODO - Please extract this to bbcode.js
+    function parse(src) {
+        if (!src) return "";
+
+        // NOTE: The order that these are handled is deliberate and important, especially line breaks!
+        // Furaffinity.net does not add line breaks after headers, but does respect line breaks in the editor.
+        // Also, it does not use <p> tags what-so-ever!
+
+        src = parseYouTube(src)
+
+        return src
+            // Normalize line endings and convert to <br>
+            .replace(/\r\n?/g, "\n")
+            .replace(/\n/g, "<br>")
+
+            // Remove <br> immediately before or after headers
+            // Also, remove <br> before a header (except the very first)
+            .replace(/(<br>\s*)+(?=<h[12])/gi, "")
+
+            // Basics
+            .replace(/\[h1\](.*?)\[\/h1\]/gi, '<h1 class="bbcode_h1">$1</h1>')
+            .replace(/\[h2\](.*?)\[\/h2\]/gi, '<h2 class="bbcode_h2">$1</h2>')
+
+            .replace(/\[h2\](.*?)\[\/h2\]/gi, '<h2 class="bbcode_h2">$1</h2>')
+            // Remove <br> right *after* headers
+            .replace(/(<\/h[12]>)<br>/gi, "$1")
+
+            .replace(/\[b\](.*?)\[\/b\]/gi, '<b class="bbcode_b">$1</b>')
+            .replace(/\[i\](.*?)\[\/i\]/gi, '<i class="bbcode_i">$1</i>')
+            .replace(/\[u\](.*?)\[\/u\]/gi, '<u class="bbcode_u">$1</u>')
+            .replace(/\[s\](.*?)\[\/s\]/gi, '<s class="bbcode_s">$1</s>')
+
+            // [url=]
+            .replace(/\[url=(https?:\/\/[^\]]+)\](.*?)\[\/url\]/gi,
+                '<a href="$1" class="bbcode_link" target="_blank" rel="noopener noreferrer">$2</a>'
+            )
+            // [url]
+            .replace(/\[url\](https?:\/\/[^\]]+)\[\/url\]/gi,
+                '<a href="$1" class="bbcode_link" target="_blank" rel="noopener noreferrer">$1</a>'
+            )
+
+            // Symbol replacements
+            .replace(/\(c\)/gi, '©')
+            .replace(/\(tm\)/gi, '™')
+            .replace(/\(r\)/gi, '®')
+
+            // Spoilers
+            .replace(/\[spoiler\](.*?)\[\/spoiler\]/gi,
+                '<span class="bbcode_spoiler">$1</span>'
+            )
+
+            // Color tags
+            .replace(/\[color=(#[0-9A-F]{3,6}|[a-z]+)\](.*?)\[\/color\]/gi,
+                '<span class="bbcode_color" style="color:$1;">$2</span>'
+            )
+
+            // 🐭Username
+            .replace(/@@([a-z0-9_-]+)/gi, (_, user) =>
+                `<span class="fa-mention"> 
+                    <a href="https://www.furaffinity.net/user/${user}" class="fa-username"><img src="https://a.facdn.net/${user}.gif"alt="${user}"class="fa-icon" onerror="this.style.display='none'"> ${user}</a>
+                </span>`
+            )
+
+            // Username
+            .replace(/@([a-zA-Z0-9_-]+)/gi, (match, user) =>
+                `<span class="fa-mention single">
+                    <a href="https://www.furaffinity.net/user/${user}" class="fa-username">${user}</a>
+                </span>`
+            )
+
+            // 🐭 Username (Legacy)
+            .replace(/:icon([a-z0-9_-]+):/gi, (_, user) =>
+                `<span class="fa-mention">
+                    <a href="https://www.furaffinity.net/user/${user}" class="fa-username"><img src="https://a.facdn.net/${user}.gif" alt="${user}" class="fa-icon" onerror="this.style.display='none'"> ${user}</a>
+                </span>`
+            )
+
+            // 🐭(Only icon)
+            .replace(/:([a-z0-9_-]+)icon:/gi, (_, user) =>
+                `<span class="fa-mention">
+                    <a href="https://www.furaffinity.net/user/${user}" class="fa-username"><img src="https://a.facdn.net/${user}.gif" alt="${user}" class="fa-icon" onerror="this.style.display='none'"></a>
+                </span>`
+            );
+    }
+
+    // TODO - Please extract this to bbcode.js
+    function parseAsync(src) {
+        return new Promise((resolve) => {
+            resolve(parse(src));
+        });
+    }
+
+    // Render bbcode text as html
+    let convert = async (input) => {
+        let html = await parseAsync(input);
+        document.querySelector('#output').innerHTML = DOMPurify.sanitize(html);
     };
 
     // Reset input text
@@ -160,13 +239,13 @@ This web site is using ${"`"}markedjs/marked${"`"}.
         }
         presetValue(defaultInput);
         document.querySelectorAll('.column').forEach((element) => {
-            element.scrollTo({ top: 0 });
+            element.scrollTo({top: 0});
         });
     };
 
     let presetValue = (value) => {
         editor.setValue(value);
-        editor.revealPosition({ lineNumber: 1, column: 1 });
+        editor.revealPosition({lineNumber: 1, column: 1});
         editor.focus();
         hasEdited = false;
     };
@@ -230,8 +309,8 @@ This web site is using ${"`"}markedjs/marked${"`"}.
             event.preventDefault();
             let value = editor.getValue();
             copyToClipboard(value, () => {
-                notifyCopied();
-            },
+                    notifyCopied();
+                },
                 () => {
                     // nothing to do
                 });
@@ -351,6 +430,39 @@ This web site is using ${"`"}markedjs/marked${"`"}.
     initScrollBarSync(scrollBarSettings);
 
     setupDivider();
+
+    function parseYouTube(src) {
+        if (!src) return "";
+
+        return src.replace(/\[yt\](https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+))\[\/yt\]/gi,
+            (_, fullUrl, videoId) => {
+                return `
+                <div class="youtubeWrapper" data-video="${videoId}">
+                    <div class="youtubeWrapper__thumbnailContainer">
+                        <img class="youtubeWrapper__thumbnail" src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="YouTube Video">
+                        <div class="youtubeWrapper__playButton"></div>
+                    </div>
+                </div>
+            `;
+            }
+        );
+    }
+
+    document.addEventListener('click', (e) => {
+        const wrapper = e.target.closest('.youtubeWrapper');
+        if (!wrapper) return;
+
+        const videoId = wrapper.dataset.video;
+        wrapper.innerHTML = `
+        <iframe
+            class="youtubeWrapper__iframe"
+            src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen
+        ></iframe>
+    `;
+    });
 };
 
 window.addEventListener("load", () => {
