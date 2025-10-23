@@ -1,4 +1,4 @@
-/* furaffinity-bbcode-light.css */
+/* furaffinity-preview-light.css */
 
 .fa-bbcode-container {
     background-color: #1b1b1d
@@ -14,7 +14,7 @@
     /* Default background colour of container */
     background-color: #353b45;
     /* This is the default font FurAffinity.net uses*/
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     font-size: 16px;
     line-height: 1.5;
     word-wrap: break-word;
@@ -26,28 +26,41 @@
     color: #ccc;
 }
 
-.fa-bbcode-body .bbcode_h1,
-.fa-bbcode-body .bbcode_h2 {
-    margin: 0;
-    padding: 0;
+.fa-bbcode-body .bbcode_h1, .bbcode_h2, .bbcode_h3, .bbcode_h4, .bbcode_h5 {
     font-weight: 400;
     color: #add8f5;
+    margin: 0;
+    padding: 0;
 }
 
-.fa-bbcode-body .bbcode_h1 {
-    font-size: 26px !important;       /* 16px × 1.6 ≈ 25.6px */
+.bbcode_h1 {
+    font-size: 26px !important;
 }
 
-.fa-bbcode-body .bbcode_h2 {
-    font-size: 24px !important; /* slightly bigger than your 1.3em for better hierarchy */
+.bbcode_h2 {
+    font-size: 24px !important;
+}
+
+.bbcode_h3 {
+    font-size: 22px !important;
+}
+
+.bbcode_h4 {
+    font-size: 20px !important;
+}
+
+.bbcode_h5 {
+    font-size: 18px !important;
 }
 
 .fa-bbcode-body .bbcode_b {
     font-weight: bold;
 }
+
 .fa-bbcode-body .bbcode_i {
     font-style: italic;
 }
+
 .fa-bbcode-body .bbcode_u {
     text-decoration: underline;
 }
@@ -62,30 +75,50 @@
 }
 
 .fa-bbcode-body .fa-icon {
-    width: 50px;        /* desired width */
-    height: 50px;       /* desired height */
+    width: 50px; /* desired width */
+    height: 50px; /* desired height */
     display: inline-block;
     vertical-align: middle;
-    object-fit: cover;  /* keeps image aspect ratio */
+    object-fit: cover; /* keeps image aspect ratio */
 }
 
 .fa-bbcode-body .fa-mention.single {
-    border-bottom: 1px dotted;  /* dotted underline */
-    cursor: pointer;            /* feels interactive */
+    border-bottom: 1px dotted; /* dotted underline */
+    cursor: pointer; /* feels interactive */
     /*color: #06c;                !* FA-like username blue *!*/
-    text-decoration: none;      /* remove default underline */
+    text-decoration: none; /* remove default underline */
 }
 
 .fa-bbcode-body .bbcode_spoiler {
-    color: black;                 /* text is black */
-    background-color: black;       /* hides it against black background */
+    color: black; /* text is black */
+    background-color: black; /* hides it against black background */
     transition: color 0.5s ease, background-color 0.3s ease;
     cursor: pointer;
 }
 
+.fa-bbcode-body .bbcode_left {
+    text-align: left;
+}
+
+.fa-bbcode-body .bbcode_center {
+    text-align: center;
+}
+
+.fa-bbcode-body .bbcode_right {
+    text-align: right;
+}
+
+.fa-bbcode-body .bbcode_quote {
+    display: block;
+    border-left: 2px gray solid;
+    font-style: italic;
+    padding: 5px;
+    margin: 5px;
+}
+
 .fa-bbcode-body .bbcode_spoiler:hover {
-    color: white;                 /* reveal text in white */
-    background-color: #353b45;       /* optional fade effect with dark gray background */
+    color: white; /* reveal text in white */
+    background-color: #353b45; /* optional fade effect with dark gray background */
 }
 
 .fa-bbcode-body .bbcode_color {
@@ -106,8 +139,8 @@
 .youtubeWrapper {
     position: relative;
     width: 100%;
-    max-width: 500px;       /* caps at 500px */
-    height: 315px;          /* fixed 16:9 */
+    max-width: 500px; /* caps at 500px */
+    height: 315px; /* fixed 16:9 */
     cursor: pointer;
     overflow: hidden;
     background-color: black; /* fallback */
@@ -153,7 +186,7 @@
     padding: 4px; /* Optional: internal padding inside the toolbar */
     background-color: #f5f5f5; /* Optional: light background */
     border-radius: 8px; /* Optional: rounded corners */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: subtle shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
 }
 
 .toolbar-row {
@@ -185,7 +218,7 @@
     position: absolute;
     background-color: #f9f9f9;
     min-width: 80px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -201,4 +234,21 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.fa-bbcode-body .bbcode_hr {
+    width: 95%;
+    margin: 6px !important;
+    border-image-source: linear-gradient(to right, transparent, #7d7d7d, transparent);
+    border-image-slice: 1;
+}
+
+sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
+sub {
+    vertical-align: sub;
+    font-size: smaller;
 }

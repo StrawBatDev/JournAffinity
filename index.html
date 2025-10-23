@@ -9,7 +9,7 @@
     <meta name="description" content="This is the online BBCode editor with live preview for Furaffinity.net.">
 
     <link rel="stylesheet" type="text/css" href="css/style.css?v=1.10.1">
-    <link rel="stylesheet" type="text/css" href="css/furaffinity-bbcode-light.css?v=1.10.1">
+    <link rel="stylesheet" type="text/css" href="css/preview.css?v=1.10.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="icon" type="image/png" href="favicon.png">
@@ -68,10 +68,18 @@
         </div>
 
         <div class="toolbar-row">
+            <button id="h1" class="fa fa-header">1</button>
+            <button id="h2" class="fa fa-header">2</button>
+            <button id="h3" class="fa fa-header">3</button>
+            <button id="h4" class="fa fa-header">4</button>
+            <button id="h5" class="fa fa-header">5</button>
+        </div>
+
+        <div class="toolbar-row">
             <button id="quote" class="fa fa-quote-left">Quote</button>
-            <button id="divider" class="fa fa-window-minimize">Divider</button>
-            <button id="size-up" class="fa fa-arrow-up">Size up</button>
-            <button id="size-down" class="fa fa-arrow-down">Size down</button>
+            <button id="line" class="fa fa-window-minimize">Divider</button>
+            <button id="sup" class="fa fa-arrow-up">Size up</button>
+            <button id="sub" class="fa fa-arrow-down">Size down</button>
         </div>
 
         <div class="toolbar-row">
@@ -107,7 +115,7 @@
 
         <div class="dropdown">
             <button class="fa fa-font">
-                Font
+                Text
             </button>
             <div class="dropdown-content">
                 <button id="bold2" class="fa fa-bold"> Bold</button>
@@ -115,20 +123,33 @@
                 <button id="underline2" class="fa fa-underline"> Underline</button>
                 <button id="strikethrough2" class="fa fa-strikethrough"> Strikethrough</button>
                 <button id="quote2" class="fa fa-quote-left"> Quote</button>
-                <button id="divider2" class="fa fa-window-minimize"> Divider</button>
-                <button id="size-up2" class="fa fa-arrow-up"> Size up</button>
-                <button id="size-down2" class="fa fa-arrow-down"> Size down</button>
+                <button id="line2" class="fa fa-window-minimize"> Divider</button>
+                <button id="sup2" class="fa fa-arrow-up"> Size up</button>
+                <button id="sub2" class="fa fa-arrow-down"> Size down</button>
             </div>
         </div>
 
         <div class="dropdown">
             <button class="fa fa-align-justify">
-                Text
+                Align
             </button>
             <div class="dropdown-content">
                 <button id="align-left2" class="fa fa-align-left"> Left</button>
                 <button id="align-center2" class="fa fa-align-center"> Center</button>
                 <button id="align-right2" class="fa fa-align-right"> Right</button>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="fa fa-header">
+                Header
+            </button>
+            <div class="dropdown-content">
+                <button id="h1_2" class="fa fa-header">1</button>
+                <button id="h2_2" class="fa fa-header">2</button>
+                <button id="h3_2" class="fa fa-header">3</button>
+                <button id="h4_2" class="fa fa-header">4</button>
+                <button id="h5_2" class="fa fa-header">5</button>
             </div>
         </div>
 
