@@ -13,9 +13,9 @@ const faMention = (user, {includeGif = false, single = false} = {}) => `
 <span class="fa-mention${single ? ' single' : ''}">
     ${a_href_fa_username(user)}
     ${includeGif ? img_src_user_gif(user) : ''}
-    ${single ? '' : ` ${user}`}
-    </a>
-</span>`
+    ${user}
+</a>
+</span>`;
 
 // ⚠️ The order here is deliberate and important!
 const bbcode = [
@@ -32,6 +32,14 @@ const bbcode = [
     {id: 'Copyright Symbol', html: '©', regex: /\(c\)/gi},
     {id: 'Trademark Symbol', html: '™', regex: /\(tm\)/gi},
     {id: 'Registered Symbol', html: '®', regex: /\(r\)/gi},
+    {
+        id: 'Plain URL',
+        html: (match) => {
+            return `<a href="${match}" class="bbcode_link" target="_blank" rel="noopener noreferrer">${match}</a>`;
+        },
+        // Match http or https URLs that are not already inside [url] tags
+        regex: /(?<!\[url=|])https?:\/\/[^\s<]+/gi,
+    },
     {
         id: 'Url=',
         html: '<a href="$1" class="bbcode_link" target="_blank" rel="noopener noreferrer">$2</a>',
@@ -53,11 +61,6 @@ const bbcode = [
         regex: /@@([a-z0-9_-]+)/gi,
     },
     {
-        id: 'Username',
-        html: (_, user) => faMention(user, {single: true}),
-        regex: /@([a-zA-Z0-9_-]+)/gi,
-    },
-    {
         id: '🐭Username(Legacy)',
         html: (_, user) => faMention(user, {includeGif: true}),
         regex: /:icon([a-z0-9_-]+):/gi,
@@ -66,6 +69,39 @@ const bbcode = [
         id: '🐭',
         html: (_, user) => faMention(user, {includeGif: true, single: true}),
         regex: /:([a-z0-9_-]+)icon:/gi,
+    },
+    {
+        id: 'Username',
+        html: (_, user) => faMention(user, {single: true}),
+        regex: /@([a-zA-Z0-9_-]+)/gi,
+    },
+    {
+        id: 'Username',
+        html: (_, user) => faMention(user, {single: true}),
+        regex: /:([a-zA-Z0-9_-]+):/gi,  // matches :username:
+    },
+    {
+        id: 'Bracketed Links',
+        html: (_, content) => {
+            const values = content.split(',').map(v => v.trim());
+            const labels = ['PREV', 'FIRST', 'NEXT'];
+
+            // Build left, middle, right sections
+            const left = values[0] && values[0] !== '-'
+                ? `<a href="https://www.furaffinity.net/view/${values[0]}" target="_blank" rel="noopener noreferrer"><<< PREV</a>`
+                : '<<< PREV';
+
+            const middle = values[1] && values[1] !== '-'
+                ? `<a href="https://www.furaffinity.net/view/${values[1]}" target="_blank" rel="noopener noreferrer">FIRST</a>`
+                : 'FIRST';
+
+            const right = values[2] && values[2] !== '-'
+                ? `<a href="https://www.furaffinity.net/view/${values[2]}" target="_blank" rel="noopener noreferrer">NEXT >>></a>`
+                : 'NEXT >>>';
+
+            return `${left} | ${middle} | ${right}`;
+        },
+        regex: /\[\s*([0-9\-]+(?:\s*,\s*[0-9\-]+)*)\s*\]/g,
     },
     {
         id: 'sup',
@@ -81,7 +117,7 @@ const bbcode = [
         id: 'line',
         html: '<hr class="bbcode bbcode_hr">',
         regex: /-{5,}/g,
-    },
+    }
 ];
 
 function makeWrappers(tags, {prefix = '', classPrefix = ''} = {}) {

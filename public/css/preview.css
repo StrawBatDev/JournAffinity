@@ -252,3 +252,14 @@ sub {
     vertical-align: sub;
     font-size: smaller;
 }
+
+/* Target bracketed links specifically */
+#output a {
+    color: #add8f5;        /* Use parent text color */
+    text-decoration: none; /* Remove underline if you like */
+}
+
+#output a:hover {
+    color: #f5f5f5;        /* Optional: color on hover */
+    text-decoration: underline;
+}
