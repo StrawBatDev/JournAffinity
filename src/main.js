@@ -6,10 +6,12 @@ import 'github-markdown-css/github-markdown-light.css';
 const init = () => {
     let hasEdited = false;
     let scrollBarSync = false;
+    let toolBarStyle = false;
 
     const localStorageNamespace = 'com.markdownlivepreview';
     const localStorageKey = 'last_state';
     const localStorageScrollBarKey = 'scroll_bar_settings';
+    const localStorageToolBarStyleKey = 'tool_bar_style_settings';
     const confirmationMessage = 'Are you sure you want to reset? Your changes will be lost.';
     // default template
     const defaultInput = `[h1]JournAffinity v1.0[/h1]
@@ -73,6 +75,18 @@ Video links (Only in journals!)
 [yt]https://www.youtube.com/watch?v=CzVeai1P1H0[/yt]
 `;
 
+    const SUPPORTED_TAGS = [
+        'b', 'i', 'u', 's', 'url', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'spoiler',
+        'sup', 'sub', 'color', 'left', 'center', 'right', 'yt'
+    ];
+    const tagPattern = [
+        '\\[',          // opening bracket
+        '/?',           // optional slash
+        '(', SUPPORTED_TAGS.join('|'), ')', // supported tags
+        '(=[^\\]]+)?',  // optional =value
+        '\\]'           // closing bracket
+    ].join('');
+
     self.MonacoEnvironment = {
         getWorker(_, label) {
             return new Proxy({}, {
@@ -83,29 +97,75 @@ Video links (Only in journals!)
     }
 
     let setupEditor = () => {
-        let editor = monaco.editor.create(document.querySelector('#editor'), {
+        // Register a simple BBCode language for highlighting
+        monaco.languages.register({id: 'bbcode'});
+        monaco.languages.setMonarchTokensProvider('bbcode', {
+            defaultToken: '',
+            tokenizer: {
+                root: [
+                    [new RegExp(tagPattern), 'keyword'],
+                    [/\[[^\]]+\]/, 'identifier'],
+                    [/./, '']
+                ]
+            }
+        });
+
+        const editor = monaco.editor.create(document.querySelector('#editor'), {
             fontSize: 14,
-            language: 'markdown', // No official support for BBCode in Monaco editor, but this is harmless
+            language: 'bbcode',
             minimap: {enabled: false},
             scrollBeyondLastLine: false,
             automaticLayout: true,
-            scrollbar: {
-                vertical: 'visible',
-                horizontal: 'visible'
-            },
+            scrollbar: {vertical: 'visible', horizontal: 'visible'},
             wordWrap: 'on',
             hover: {enabled: false},
-            quickSuggestions: false,
-            suggestOnTriggerCharacters: false,
+            quickSuggestions: true, // enable quick suggestions
+            suggestOnTriggerCharacters: true, // trigger on typing [
             folding: false
         });
 
+        editor.focus();
+
+        // BBCode tag autocomplete provider
+        const SUPPORTED_TAGS = ['b', 'i', 'u', 's', 'url', 'color', 'spoiler'];
+        monaco.languages.registerCompletionItemProvider('bbcode', {
+            triggerCharacters: ['['],
+            provideCompletionItems: (model, position) => {
+                return {
+                    suggestions: SUPPORTED_TAGS.map(tag => ({
+                        label: tag,
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        // Only insert the tag name; user already typed '['
+                        insertText: `${tag}]$0[/${tag}]`,
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: `Insert [${tag}]...[/ ${tag}]`
+                    }))
+                };
+            }
+        });
+
+        // Keyboard shortcuts for Cmd/Ctrl + B/I/U/S
+        const tagMap = {b: 'b', i: 'i', u: 'u', s: 's'};
+        editor.onKeyDown(e => {
+            const key = e.browserEvent.key.toLowerCase();
+            if ((e.metaKey || e.ctrlKey) && tagMap[key]) {
+                e.preventDefault();
+                wrapOrInsertTag(editor, tagMap[key]);
+            }
+        });
+
+        document.getElementById('bold').addEventListener('click', () => wrapOrInsertTag(editor, 'b'));
+        document.getElementById('italic').addEventListener('click', () => wrapOrInsertTag(editor, 'i'));
+        document.getElementById('underline').addEventListener('click', () => wrapOrInsertTag(editor, 'u'));
+        document.getElementById('strikethrough').addEventListener('click', () => wrapOrInsertTag(editor, 's'));
+        // Undo/redo buttons
+        document.getElementById('undoBtn').addEventListener('click', () => editor.trigger('keyboard', 'undo', null));
+        document.getElementById('redoBtn').addEventListener('click', () => editor.trigger('keyboard', 'redo', null));
+
         editor.onDidChangeModelContent(() => {
             let changed = editor.getValue() !== defaultInput;
-            if (changed) {
-                hasEdited = true;
-            }
-            let value = editor.getValue();
+            if (changed) hasEdited = true;
+            const value = editor.getValue();
             convert(value);
             saveLastContent(value);
         });
@@ -129,6 +189,42 @@ Video links (Only in journals!)
 
         return editor;
     };
+
+    function wrapOrInsertTag(editor, tag) {
+        if (!SUPPORTED_TAGS.includes(tag)) return; // ignore unsupported tags
+        const model = editor.getModel();
+        let selection = editor.getSelection();
+        let text = model.getValueInRange(selection);
+        editor.pushUndoStop();
+
+        if (text) {
+            // Wrap selected text
+            editor.executeEdits('bbcode', [{
+                range: selection,
+                text: `[${tag}]${text}[/${tag}]`,
+                forceMoveMarkers: true
+            }]);
+        } else {
+            // Insert tag pair and move cursor in between
+            const insertText = `[${tag}][/${tag}]`;
+            editor.executeEdits('bbcode', [{
+                range: selection,
+                text: insertText,
+                forceMoveMarkers: true
+            }]);
+            const pos = selection.getStartPosition();
+            editor.setPosition({
+                lineNumber: pos.lineNumber,
+                column: pos.column + tag.length + 2
+            });
+
+            editor.pushUndoStop();
+            editor.focus();
+        }
+    }
+
+    const simpleToolbar = document.getElementById('toolbar-simple');
+    const dropdownToolbar = document.getElementById('toolbar-dropdown');
 
     // TODO - Please extract this to bbcode.js
     function parse(src) {
@@ -264,6 +360,20 @@ Video links (Only in journals!)
         });
     };
 
+    let initToolBarStyleSync = (settings) => {
+        let checkbox = document.querySelector('#toolbar-style-checkbox');
+        checkbox.checked = settings;
+        toolBarStyle = settings
+
+        checkbox.addEventListener('change', (event) => {
+            let checked = event.currentTarget.checked;
+            toolBarStyle = checked;
+            saveToolbarStyleSettings(checked);
+            simpleToolbar.style.display = checked ? 'none' : 'flex';
+            dropdownToolbar.style.display = checked ? 'flex' : 'none';
+        });
+    };
+
     let enableScrollBarSync = () => {
         scrollBarSync = true;
     };
@@ -334,7 +444,17 @@ Video links (Only in journals!)
         return lastContent;
     };
 
+    let loadToolBarSettings = () => {
+        let lastContent = Storehouse.getItem(localStorageNamespace, localStorageToolBarStyleKey);
+        return lastContent;
+    };
+
     let saveScrollBarSettings = (settings) => {
+        let expiredAt = new Date(2099, 1, 1);
+        Storehouse.setItem(localStorageNamespace, localStorageScrollBarKey, settings, expiredAt);
+    };
+
+    let saveToolbarStyleSettings = (settings) => {
         let expiredAt = new Date(2099, 1, 1);
         Storehouse.setItem(localStorageNamespace, localStorageScrollBarKey, settings, expiredAt);
     };
@@ -427,7 +547,9 @@ Video links (Only in journals!)
     setupCopyButton(editor);
 
     let scrollBarSettings = loadScrollBarSettings() || false;
+    let toolBarSettings = loadToolBarSettings() || false;
     initScrollBarSync(scrollBarSettings);
+    initToolBarStyleSync(toolBarSettings)
 
     setupDivider();
 

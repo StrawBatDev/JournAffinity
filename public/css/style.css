@@ -170,3 +170,64 @@ footer {
 .split-divider.active {
   background: #666;
 }
+
+.toolbar-buttons-pane {
+    margin: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+button {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f0f0f0;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ddd;
+}
+
+#bold {
+    font-weight: bold;
+}
+
+#italic {
+    font-style: italic;
+}
+
+#underline {
+    text-decoration: underline;
+}
+
+#strikethrough {
+    text-decoration: line-through;
+}
+
+#toolbar-simple, #toolbar-dropdown {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.dropdown {
+    position: relative;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    flex-direction: column;
+    /*min-width: 200px; !* sets a wider minimum width *!*/
+    padding: 0.25rem 0; /* optional padding for spacing */
+    z-index: 1000; /* ensures it appears above other elements */
+}
+
+.dropdown-content button {
+    white-space: nowrap;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+}
