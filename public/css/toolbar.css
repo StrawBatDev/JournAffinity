@@ -1,0 +1,139 @@
+/* === Toolbar Layout === */
+#toolbar {
+    width: fit-content;
+    margin: var(--space-sm) var(--space-xl) var(--space-sm) var(--space-sm);
+    padding: var(--space-sm);
+    background-color: var(--color-panel-bg);
+    border: 1px solid var(--color-btn-border);
+    color: var(--color-panel-fore);
+}
+
+#toolbar-simple,
+#toolbar-dropdown {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--toolbar-gap);
+}
+
+button {
+    padding: var(--toolbar-padding);
+    color: var(--color-panel-fore) !important;
+    background: var(--color-btn-bg);
+    border: 1px solid var(--color-btn-border);
+    border-radius: 0;
+    flex: 0 0 auto;
+}
+
+#toolbar button:hover {
+    background: var(--color-btn-hover);
+}
+
+.toolbar-row {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: nowrap;
+}
+
+.toolbar-column {
+    display: flex;
+    flex-direction: column;
+    gap:var(--space-sm);
+    font-weight: 600;
+    font-size: var(--font-md);
+    color: var(--color-muted);
+}
+
+/* Responsive stacking for small screens */
+@media (max-width: var(--toolbar-max-width)) {
+    #toolbar-simple {
+        flex-direction: column;
+    }
+
+    .toolbar-column {
+        width: 100%;
+    }
+}
+
+/* === Tooltip === */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-panel-fore);
+    text-align: center;
+    font-size: var(--font-sm);
+    padding: var(--space-sm) var(--space-sm);
+    border-radius: var(--radius);
+    position: absolute;
+    z-index: 100;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    border: 1px solid var(--color-btn-border);
+    pointer-events: none;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* === Dropdown === */
+.dropdown {
+    content: '▾';
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-dropdown-bg);
+    border: 1px solid var(--color-btn-border);
+    min-width: 120px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    border-radius: var(--radius);
+    overflow-y: auto;
+    max-height: 300px;
+    margin-top: 0;
+}
+
+/* === Scrollbar Style === */
+.dropdown-content::-webkit-scrollbar {
+    width:var(--space-sm);
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+    background: var(--color-scrollbar-track);
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    background-color: var(--color-scrollbar-thumb);
+    border-radius:var(--radius);
+    border: 1px solid var(--color-scrollbar-track);
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-scrollbar-thumb);
+}
+
+/* Firefox */
+.dropdown-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}

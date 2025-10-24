@@ -15,16 +15,6 @@ export const TAG_PATTERN = [
 ].join('');
 
 export const DEFAULT_INPUT = `[h1]JournAffinity v1.0[/h1]
-[h2]Whats left?[/h2]
-1. Divider lines
-2. Comic navigation
-3. Text size up and down
-4. Text alignment
-5. Headers 1-5 to match documentation
-6. Quotes
-7. :linkfender: -> Creates a link to a user's page.
-8. BUTTONS!
-
 Hi, I am :strawbaticon: and this is an [b]WYSIWYG editor[/b] I made to help you write journals and post descriptions on Furaffinity.net!
 
 [h2]Dorky stuff translated for the layman:[/h2]

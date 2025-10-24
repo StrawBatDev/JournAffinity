@@ -6,7 +6,7 @@ html, body {
     font-family: Helvetica, arial, freesans, clean, sans-serif;
     font-size: 1em;
     line-height: 1.5em;
-    background-color: #fff;
+    background-color: #1b1b1d;
     overscroll-behavior-y: none;
 }
 
@@ -39,19 +39,82 @@ img {
     border: none;
 }
 
+/* Apply standard button styling only to header buttons, not checkboxes */
+#menu-items > button,
+#menu-items > .button:not(.checkbox) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--toolbar-padding, 0.5em 1em);
+    color: var(--color-panel-fore);
+    background-color: var(--color-btn-bg);
+    border: 1px solid var(--color-btn-border);
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+/* Hover effect for those buttons */
+#menu-items > button:hover,
+#menu-items > .button:not(.checkbox):hover {
+    background-color: var(--color-btn-hover);
+}
+
+.button.checkbox + .button.checkbox {
+    margin-left: var(--space-lg); /* adds extra space between checkboxes */
+}
+
+/*!* All header buttons *!*/
+/*#menu-items .button {*/
+/*    height: 36px;            !* set same height for all buttons *!*/
+/*    display: inline-flex;     !* allow flex alignment inside button *!*/
+/*    align-items: center;      !* vertically center icon/text *!*/
+/*    justify-content: center;  !* optional: center content horizontally *!*/
+/*    padding: 0 12px;          !* horizontal padding only *!*/
+/*    gap: 6px;                 !* space between icon and text *!*/
+/*    box-sizing: border-box;   !* include borders/padding in height *!*/
+/*}*/
+
+#menu-items > div {
+    display: flex;
+    align-items: center; /* vertical centering */
+    gap: 6px;            /* space between checkbox and label */
+}
+
+/* Nuke button styling */
+.button.nuke {
+    border-radius: 0;
+    border: 1px solid var(--color-nuke-border) !important;
+    background-color: var(--color-nuke-background) !important;
+}
+
+/* Copy button styling */
+.button.copy {
+    /* remove vertical padding: handled by height */
+    padding: 0 30px; /* horizontal spacing only */
+}
+
+/* Logo aligned with buttons */
+.site-logo {
+    height: 36px;  /* same as buttons height */
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: var(--space-lg);
+}
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 16px;
+    padding: var(--space-sm) var(--space-lg);
     width: 100%;
-    background-color: #444;
-    font-size: 12px;
-    color: #fff;
+    background-color: var(--color-header);
+    font-size: var(--font-sm);
+    color: var(--color-text-primary);
 }
 
 header a:link, header a:hover, header a:visited, header a:active {
-    color: #fff;
+    color: var(--color-text-primary);
 }
 
 header a:hover {
@@ -60,6 +123,14 @@ header a:hover {
 
 #menu-items {
     display: flex;
+}
+
+#menu-items button {
+    display: flex;
+    align-items: center;
+    gap: 6px;   /* spacing between icon and text */
+    padding: 6px 12px;
+    margin: 0 var(--space-xs);  /* remove extra spacing */
 }
 
 #reset-button {
@@ -71,7 +142,7 @@ header a:hover {
 }
 
 #sync-button {
-    margin-left: 16px;
+    margin-left: var(--space-lg);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -80,8 +151,8 @@ header a:hover {
 
 header input[type="checkbox"] {
     vertical-align: middle;
-    margin-right: 4px;
-    margin-top: 0px;
+    margin-right: var(--space-sm);
+    margin-top: 0;
 }
 
 #github {
@@ -103,8 +174,8 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #fff;
-    color: #fff;
+    background-color: var(--color-text-primary);
+    color: var(--color-text-primary);
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -114,14 +185,13 @@ footer {
     flex-grow: 1;
     overflow: hidden;
     width: 100%;
-    margin: 0 auto;
-    background-color: #fff;
-    border-bottom: 1px solid #e8e8e8;
+    /*margin: 10px;*/
     display: flex;
 }
 
 #editor-wrapper {
     height: 100%;
+    /*padding: 0 10px 0 10px;*/
 }
 
 #editor {
@@ -129,7 +199,7 @@ footer {
 }
 
 #preview-wrapper {
-    padding: 8px 16px 16px 16px;
+    padding: 0 10px 10px 10px;
 }
 
 .column {
@@ -158,17 +228,43 @@ footer {
 
 .split-divider {
     width: 5px;
-    background: #ccc;
+    background: var(--color-btn-hover);
     cursor: col-resize;
-    z-index: 1;
+    z-index: 10;
+    position: relative;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    border-left: 1px solid var(--color-btn-border);
+    border-right: 1px solid var(--color-btn-border);
 }
 
 .split-divider.hover {
-    background: #999;
+    background: var(--color-btn-border);
+    box-shadow: 0 0 var(--space-sm) var(--color-accent); /* glow on hover */
+    transform: scaleX(1.3); /* subtle visual growth */
 }
 
 .split-divider.active {
-    background: #666;
+    background: var(--color-panel-fore);
+    box-shadow: 0 0 var(--space-sm) var(--color-accent); /* highlight when dragging */
+}
+
+/* Optional: add a “grip” pattern in the center */
+.split-divider::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    margin-left: -1px; /* center it */
+    background: repeating-linear-gradient(
+            to bottom,
+            var(--color-split-divider) 0,
+            var(--color-split-divider) 4px,
+            transparent 4px,
+            transparent 8px
+    );
+    pointer-events: none; /* don’t block dragging */
 }
 
 .toolbar-buttons-pane {
@@ -203,12 +299,6 @@ button:hover {
 
 #strikethrough {
     text-decoration: line-through;
-}
-
-#toolbar-simple, #toolbar-dropdown {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
 }
 
 .dropdown {

@@ -40,6 +40,27 @@ function registerCompletionItemProvider() {
 }
 
 function createEditor() {
+
+    monaco.editor.defineTheme('furAffinityTheme', {
+        base: 'vs-dark',    // inherit all vs-dark styles
+        inherit: true,      // keep default token colors
+        rules: [],          // empty rules, keep syntax colors
+        colors: {
+            'editor.background': '#1b1b1d',          // your custom background
+            'editor.foreground': '#D4D4D4',          // default text
+            'editorLineNumber.foreground': '#858585',
+            'editorCursor.foreground': '#AEAFAD',
+            'editor.selectionBackground': '#264F78',
+            'editor.lineHighlightBackground': '#2A2A2A',
+
+            /* Scrollbar styling */
+            'scrollbar.shadow': '#00000000',
+            'scrollbarSlider.background': '#44475a88',
+            'scrollbarSlider.hoverBackground': '#555a7088',
+            'scrollbarSlider.activeBackground': '#666b8088',
+        }
+    });
+
     return monaco.editor.create(document.querySelector('#editor'), {
         fontSize:/*--------------*/ 14,
         language:/*--------------*/ editorConfig.BBCODE_MONACO_LANGUAGE_ID,
@@ -51,6 +72,7 @@ function createEditor() {
         hover:/*-----------------*/ {enabled: false},
         quickSuggestions:/*------*/ true, // enable quick suggestions
         suggestOnTriggerCharacters: true, // trigger on typing [
+        theme: 'furAffinityTheme',
         folding:/*---------------*/ false
     });
 }

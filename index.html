@@ -8,7 +8,9 @@
     <meta http-equiv="content-type" content="text/css">
     <meta name="description" content="This is the online BBCode editor with live preview for Furaffinity.net.">
 
+    <link rel="stylesheet" type="text/css" href="css/theme.css">
     <link rel="stylesheet" type="text/css" href="css/style.css?v=1.10.1">
+    <link rel="stylesheet" type="text/css" href="css/toolbar.css?v=1.10.1">
     <link rel="stylesheet" type="text/css" href="css/preview.css?v=1.10.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -17,160 +19,306 @@
     <title>JournAffinity</title>
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-77C1GEG9C8"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
+<!--&lt;!&ndash; Google tag (gtag.js) &ndash;&gt;-->
+<!--<script async src="https://www.googletagmanager.com/gtag/js?id=G-77C1GEG9C8"></script>-->
+<!--<script>-->
+<!--    window.dataLayer = window.dataLayer || [];-->
 
-    function gtag() {
-        dataLayer.push(arguments);
-    }
+<!--    function gtag() {-->
+<!--        dataLayer.push(arguments);-->
+<!--    }-->
 
-    gtag('js', new Date());
+<!--    gtag('js', new Date());-->
 
-    gtag('config', 'G-77C1GEG9C8');
-</script>
+<!--    gtag('config', 'G-77C1GEG9C8');-->
+<!--</script>-->
 
 <body>
 
 <header>
     <div id="menu-items">
-        <div><a href="/">JournAffinity</a></div>
-        <div id="reset-button"><a href="#">Reset</a></div>
-        <div id="copy-button"><a href="#">Copy</a></div>
-        <div id="sync-button"><input type="checkbox" id="sync-scroll-checkbox"><label for="sync-scroll-checkbox">Sync
-            scroll</label></div>
-        <div id="toolbar-style-button"><input type="checkbox" id="toolbar-style-checkbox"><label
+        <div>
+            <a href="https://www.furaffinity.net/">
+                <img src="image/fa_logo.webp" class="site-logo" alt="Logo" sizes="">
+            </a>
+        </div>
+        <button id="new-journal" class="button copy"
+                onclick="window.location.href='https://www.furaffinity.net/controls/journal/'">
+            <span class="fa fa-file"></span>
+            New Journal
+        </button>
+
+        <button id="copy-button" class="button copy">
+            <span class="fa fa-clipboard"></span>
+            <span class="button-text">Copy</span>
+        </button>
+
+        <button id="reset-button" class="button nuke">
+            <img src="image/nuke.svg" class="svg-icon" alt="Reset button">
+        </button>
+
+        <div id="sync-button" class="button checkbox">
+            <input type="checkbox" id="sync-scroll-checkbox">
+            <label for="sync-scroll-checkbox">Sync scroll</label>
+        </div>
+
+        <div id="toolbar-style-button" class="button checkbox"><input type="checkbox" id="toolbar-style-checkbox"><label
                 for="toolbar-style-checkbox">Advanced Toolbar</label></div>
+
     </div>
     <div id="github"><a href="https://github.com/StrawBatDev/JournAffinity"><img
             src="image/GitHub-Mark-Light-32px.webp"></a></div>
 </header>
-
-<div id="toolbar">
-
+<div class=toolbar id="toolbar">
     <div id="toolbar-simple">
+        <div class="toolbar-column">
+            Edit
+            <div class="toolbar-row">
 
-        <div class="toolbar-row">
-            <button id="undoBtn" class="fa fa-undo">Undo</button>
-            <button id="redoBtn" class="fa fa-repeat">Redo</button>
-            <button id="cutBtn" class="fa fa-cut">Cut</button>
-            <button id="copyBtn" class="fa fa-copy">Copy</button>
-            <button id="pasteBtn" class="fa fa-paste">Paste</button>
-            <button id="deleteBtn" class="fa fa-eraser">Delete</button>
+                <div class="tooltip">
+                    <button id="undoBtn" class="fa fa-undo"></button>
+                    <span class="tooltiptext">Undo</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="redoBtn" class="fa fa-repeat"></button>
+                    <span class="tooltiptext">Redo</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="cutBtn" class="fa fa-cut"></button>
+                    <span class="tooltiptext">Cut</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="copyBtn" class="fa fa-copy"></button>
+                    <span class="tooltiptext">Copy</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="pasteBtn" class="fa fa-paste"></button>
+                    <span class="tooltiptext">Paste</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="deleteBtn" class="fa fa-eraser"></button>
+                    <span class="tooltiptext">Eraser</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="toolbar-column">
+            Text
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="bold" class="fa fa-bold"></button>
+                    <span class="tooltiptext">Bold</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="italic" class="fa fa-italic"></button>
+                    <span class="tooltiptext">Italic</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="underline" class="fa fa-underline"></button>
+                    <span class="tooltiptext">Underline</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="strikethrough" class="fa fa-strikethrough"></button>
+                    <span class="tooltiptext">Strikethrough</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="colour" class="fa fa-paint-brush"></button>
+                    <span class="tooltiptext">Colour</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="quote" class="fa fa-quote-left"></button>
+                    <span class="tooltiptext">Quote</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="sup" class="fa fa-arrow-up"></button>
+                    <span class="tooltiptext">Size Up</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="sub" class="fa fa-arrow-down"></button>
+                    <span class="tooltiptext">Size Down</span>
+                </div>
+            </div>
         </div>
 
-        <div class="toolbar-row">
-            <button id="bold" class="fa fa-bold">Bold</button>
-            <button id="italic" class="fa fa-italic">Italic</button>
-            <button id="underline" class="fa fa-underline">Underline</button>
-            <button id="strikethrough" class="fa fa-strikethrough">Strikethrough</button>
+        <div class="toolbar-column">
+            Align
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="align-left" class="fa fa-align-left"></button>
+                    <span class="tooltiptext">Align Left</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="align-center" class="fa fa-align-center"></button>
+                    <span class="tooltiptext">Align Center</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="align-right" class="fa fa-align-right"></button>
+                    <span class="tooltiptext">Align Right</span>
+                </div>
+            </div>
         </div>
 
-        <div class="toolbar-row">
-            <button id="h1" class="fa fa-header">1</button>
-            <button id="h2" class="fa fa-header">2</button>
-            <button id="h3" class="fa fa-header">3</button>
-            <button id="h4" class="fa fa-header">4</button>
-            <button id="h5" class="fa fa-header">5</button>
+        <div class="toolbar-column">
+            Headers
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="h1" class="fa fa-header">1</button>
+                    <span class="tooltiptext">Header 1</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h2" class="fa fa-header">2</button>
+                    <span class="tooltiptext">Header 2</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h3" class="fa fa-header">3</button>
+                    <span class="tooltiptext">Header 3</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h4" class="fa fa-header">4</button>
+                    <span class="tooltiptext">Header 4</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h5" class="fa fa-header">5</button>
+                    <span class="tooltiptext">Header 5</span>
+                </div>
+            </div>
         </div>
 
-        <div class="toolbar-row">
-            <button id="quote" class="fa fa-quote-left">Quote</button>
-            <button id="line" class="fa fa-window-minimize">Divider</button>
-            <button id="sup" class="fa fa-arrow-up">Size up</button>
-            <button id="sub" class="fa fa-arrow-down">Size down</button>
-        </div>
+        <div class="toolbar-column">
+            Insert
+            <div class="toolbar-row">
 
-        <div class="toolbar-row">
-            <button id="align-left" class="fa fa-align-left">Left</button>
-            <button id="align-center" class="fa fa-align-center">Center</button>
-            <button id="align-right" class="fa fa-align-right">Right</button>
-        </div>
+                <div class="tooltip">
+                    <button id="icon-only" class="fa fa-paw"></button>
+                    <span class="tooltiptext">Add Icon Only</span>
+                </div>
 
-        <div class="toolbar-row">
-            <button id="icon-only" class="fa fa-paw"></button>
-            <button id="icon-username" class="fa fa-paw"> Username</button>
-            <button id="icon-username-legacy" class="fa fa-paw"> Username (Legacy)</button>
-            <button id="username-only" class="fa fa-at"> Username</button>
-            <button id="navigation" class="fa fa-picture-o"> Sequence</button>
-        </div>
+                <div class="tooltip">
+                    <button id="icon-username" class="fa fa-paw"> User</button>
+                    <span class="tooltiptext">Add Icon and username (New)</span>
+                </div>
 
+                <div class="tooltip">
+                    <button id="icon-username-legacy" class="fa fa-paw"> User</button>
+                    <span class="tooltiptext">Add Icon and username (legacy)</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="username-only" class="fa fw-at"> User</button>
+                    <span class="tooltiptext">Add username only</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="navigation" class="fa fw-ellipsis-h">←Prev/First/Next→</button>
+                    <span class="tooltiptext">Add ←Prev/First/Next→</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="line" class="fa fa-window-minimize"> Divider</button>
+                    <span class="tooltiptext">Add Divider</span>
+                </div>
+            </div>
+        </div>
     </div>
-
     <div id="toolbar-dropdown" style="display:none;">
-        <div class="dropdown">
-            <button class="fa fa-file">
-                Edit
-            </button>
-            <div class="dropdown-content">
-                <button id="undoBtn2" class="fa fa-undo"> Undo</button>
-                <button id="redoBtn2" class="fa fa-repeat"> Redo</button>
-                <button id="cutBtn2" class="fa fa-cut"> Cut</button>
-                <button id="copyBtn2" class="fa fa-copy"> Copy</button>
-                <button id="pasteBtn2" class="fa fa-paste"> Paste</button>
-                <button id="deleteBtn2" class="fa fa-eraser"> Delete</button>
+        <div class="toolbar-column">
+            Hover over buttons to show each menu
+            <div>
+                <div class="dropdown">
+                    <button class="fa fa-file">
+                        Edit
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="undoBtn2" class="fa fa-undo"> Undo</button>
+                        <button id="redoBtn2" class="fa fa-repeat"> Redo</button>
+                        <button id="cutBtn2" class="fa fa-cut"> Cut</button>
+                        <button id="copyBtn2" class="fa fa-copy"> Copy</button>
+                        <button id="pasteBtn2" class="fa fa-paste"> Paste</button>
+                        <button id="deleteBtn2" class="fa fa-eraser"> Delete</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-font">
+                        Text
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="bold2" class="fa fa-bold" title="Bold"> Bold</button>
+                        <button id="italic2" class="fa fa-italic"> Italic</button>
+                        <button id="underline2" class="fa fa-underline"> Underline</button>
+                        <button id="strikethrough2" class="fa fa-strikethrough"> Strikethrough</button>
+                        <button id="colour2" class="fa fa-paint-brush"></button>
+                        <button id="quote2" class="fa fa-quote-left"> Quote</button>
+                        <button id="sup2" class="fa fa-arrow-up"> Size up</button>
+                        <button id="sub2" class="fa fa-arrow-down"> Size down</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-align-justify">
+                        Align
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="align-left2" class="fa fa-align-left"> Left</button>
+                        <button id="align-center2" class="fa fa-align-center"> Center</button>
+                        <button id="align-right2" class="fa fa-align-right"> Right</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-header">
+                        Header
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="h1_2" class="fa fa-header">1</button>
+                        <button id="h2_2" class="fa fa-header">2</button>
+                        <button id="h3_2" class="fa fa-header">3</button>
+                        <button id="h4_2" class="fa fa-header">4</button>
+                        <button id="h5_2" class="fa fa-header">5</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-plus">
+                        Insert
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="icon-only2" class="fa fa-paw"></button>
+                        <button id="icon-username2" class="fa fa-paw"> Username</button>
+                        <button id="icon-username-legacy2" class="fa fa-paw"> Username (Legacy)</button>
+                        <button id="username-only2" class="fa fa-at"> Username</button>
+                        <button id="navigation2" class="fa fa-ellipsis-h">←Prev/First/Next→</button>
+                        <button id="line2" class="fa fa-window-minimize"> Divider</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="dropdown">
-            <button class="fa fa-font">
-                Text
-            </button>
-            <div class="dropdown-content">
-                <button id="bold2" class="fa fa-bold"> Bold</button>
-                <button id="italic2" class="fa fa-italic"> Italic</button>
-                <button id="underline2" class="fa fa-underline"> Underline</button>
-                <button id="strikethrough2" class="fa fa-strikethrough"> Strikethrough</button>
-                <button id="quote2" class="fa fa-quote-left"> Quote</button>
-                <button id="line2" class="fa fa-window-minimize"> Divider</button>
-                <button id="sup2" class="fa fa-arrow-up"> Size up</button>
-                <button id="sub2" class="fa fa-arrow-down"> Size down</button>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="fa fa-align-justify">
-                Align
-            </button>
-            <div class="dropdown-content">
-                <button id="align-left2" class="fa fa-align-left"> Left</button>
-                <button id="align-center2" class="fa fa-align-center"> Center</button>
-                <button id="align-right2" class="fa fa-align-right"> Right</button>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="fa fa-header">
-                Header
-            </button>
-            <div class="dropdown-content">
-                <button id="h1_2" class="fa fa-header">1</button>
-                <button id="h2_2" class="fa fa-header">2</button>
-                <button id="h3_2" class="fa fa-header">3</button>
-                <button id="h4_2" class="fa fa-header">4</button>
-                <button id="h5_2" class="fa fa-header">5</button>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <button class="fa fa-plus">
-                Insert
-            </button>
-            <div class="dropdown-content">
-                <button id="icon-only2" class="fa fa-paw"></button>
-                <button id="icon-username2" class="fa fa-paw"> Username</button>
-                <button id="icon-username-legacy2" class="fa fa-paw"> Username (Legacy)</button>
-                <button id="username-only2" class="fa fa-at"> Username</button>
-                <button id="navigation2" class="fa fa-picture-o"> Sequence</button>
-            </div>
-        </div>
-
     </div>
-
 </div>
 <div id="container" class="split-container">
-
     <div id="edit" class="column editor-pane">
         <div id="editor-wrapper">
             <div id="editor"></div>

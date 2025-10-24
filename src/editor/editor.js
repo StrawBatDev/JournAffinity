@@ -1,6 +1,5 @@
 import {DEFAULT_INPUT} from "../constants/editorConfig";
 import * as editorConfig from "../constants/editorConfig";
-import {editor} from "monaco-editor";
 import {copyToClipboard, notifyCopied} from "./clipboard";
 
 
@@ -105,15 +104,16 @@ export let registerEditorDivider = () => {
     });
 };
 
+// TODO - Does this get invoked?
 let reset = (editor, hasEdited) => {
     let changed = editor.getValue() !== DEFAULT_INPUT;
     if (hasEdited || changed) {
-        var confirmed = window.confirm(editorConfig.confirmationMessage);
+        const confirmed = window.confirm(editorConfig.confirmationMessage);
         if (!confirmed) {
             return;
         }
     }
-    presetValue(DEFAULT_INPUT);
+    presetValue(editor, DEFAULT_INPUT);
     document.querySelectorAll('.column').forEach((element) => {
         element.scrollTo({top: 0});
     });

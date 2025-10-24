@@ -10,9 +10,9 @@ export let copyToClipboard = (text, successHandler, errorHandler) => {
 };
 
 export let notifyCopied = () => {
-    let labelElement = document.querySelector("#copy-button a");
+    let labelElement = document.querySelector("#copy-button .button-text");
     labelElement.innerHTML = "Copied!";
     setTimeout(() => {
         labelElement.innerHTML = "Copy";
-    }, 1000)
+    }, 1000);
 };

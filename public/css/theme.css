@@ -1,0 +1,77 @@
+:root {
+    /* Fur-Affinity colors*/
+
+    --color-0: #1b1b1d; /* Background */
+    --color-1: #20242a; /* Content header */
+    --color-2: #353b45; /* Content background */
+    --color-3: #add8f5; /* Text Accented */
+    --color-4: #fff; /* Text */
+    --color-7: #434b5b; /* Button Background */
+    --color-5: #576175; /* Button Background Hover */
+    --color-6: #69697d; /* Button Border */
+    --color-8: #000000; /* Header Banner */
+    --color-9: #c80000; /* Nuke border */
+    --color-10: #8c0000; /* Nuke background */
+    --color-11: #8c0000; /* Nuke background hover */
+
+    /* Header Banner */
+    --color-header: var(--color-8);
+
+    /* Text Primary */
+    --color-text-primary: var(--color-4);
+
+    /* Primary panel / UI */
+    --color-panel-bg: var(--color-1); /* #toolbar background */
+    --color-panel-fore: var(--color-4); /* toolbar text */
+
+    --color-nuke-border: var(--color-9);
+    --color-nuke-background: var(--color-10);
+    --color-nuke-background-hover: var(--color-11);
+
+    --color-split-divider: rgba(255,255,255,0.2);
+
+    /* Buttons */
+    --color-btn-bg: var(--color-7); /* default button bg */
+    --color-btn-hover: var(--color-5); /* hover */
+    --color-btn-border: var(--color-6); /* button border (also panel border) */
+
+    /* Dropdowns & tooltips */
+    --color-dropdown-bg: var(--color-7); /* .dropdown-content background */
+    --color-tooltip-bg: var(--color-1); /* .tooltip background */
+
+    /* Muted / headings */
+    --color-muted: var(--color-4); /* .toolbar-column text color */
+
+    /* Scrollbar (track / thumb) */
+    --color-scrollbar-thumb: var(--color-7);
+    --color-scrollbar-track: var(--color-2);
+
+    /* Accent (suggested) */
+    --color-accent: var(--color-3); /* useful for selection, cursor, highlights */
+
+    /* Page / editor background*/
+    --color-page-bg: var(--color-0);
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+
+    /*!* Border radius *!*/
+    --radius: 4px;
+
+    /*!* Button sizes *!*/
+    /*--button-min-size: 36px;*/
+    /*--button-padding: 10px;*/
+
+    /*!* Toolbar *!*/
+    --toolbar-gap: var(--space-sm);
+    --toolbar-margin: 10px;
+    --toolbar-padding: 10px;
+    --toolbar-max-width: 700px;
+
+    /*!* Font sizes *!*/
+    --font-sm: 13px;
+    --font-md: 15px;
+}
