@@ -1,7 +1,11 @@
 import * as editorConfig from "../constants/editorConfig";
 
 export function wrapOrInsertTag(editor, tag) {
-    if (!editorConfig.SUPPORTED_TAGS.includes(tag)) return; // ignore unsupported tags
+    // Extract the base tag (before any =, e.g., color=red -> color)
+    const baseTag = tag.split('=')[0];
+
+    if (!editorConfig.SUPPORTED_TAGS.includes(baseTag)) return; // ignore unsupported tags
+
     const model = editor.getModel();
     let selection = editor.getSelection();
     let text = model.getValueInRange(selection);
@@ -19,6 +23,12 @@ export function wrapOrInsertTag(editor, tag) {
             lineNumber: pos.lineNumber,
             column: pos.column + 5 // move cursor after the inserted dashes
         });
+    } else if (text || tag.startsWith('color=')) {
+        editor.executeEdits('preview', [{
+            range: selection,
+            text: `[${tag}]${text}[/${tag.split('=')[0]}]`,
+            forceMoveMarkers: true
+        }]);
     } else if (text) {
         // Wrap selected text
         editor.executeEdits('preview', [{

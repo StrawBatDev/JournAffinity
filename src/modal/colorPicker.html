@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/theme.css">
+    <title>Color Picker</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+            background: var(--color-page-bg, #1b1b1d);
+            color: var(--color-text-primary, #fff);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            background: var(--color-panel-bg, #20242a);
+            border-bottom: 1px solid var(--color-btn-border, #69697d);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--color-panel-fore, #fff);
+        }
+
+        .color-grid-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 30px);
+            gap: 2px;
+            /*justify-content: center; !* centers grid horizontally *!*/
+        }
+
+        .color-swatch {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.15s ease, border 0.15s ease; /* smooth animation */
+        }
+
+        .color-swatch:hover {
+            border: 2px solid #000000;
+            transform: scale(1.5); /* make the color bigger on hover */
+            z-index: 2; /* make sure it appears above neighbors */
+        }
+
+        .custom-color {
+            display: flex;
+            gap: 5px;
+            padding: 0.5rem;
+            background: var(--color-panel-bg, #20242a);
+            border-top: 1px solid var(--color-btn-border, #69697d);
+        }
+
+        .custom-color input {
+            flex: 1;
+            padding: 4px;
+            border: 1px solid var(--color-btn-border, #69697d);
+            background: var(--color-2, #353b45);
+            color: var(--color-text-primary, #fff);
+        }
+
+        .custom-color button {
+            padding: 4px 8px;
+            cursor: pointer;
+            border: 1px solid var(--color-btn-border, #69697d);
+            background: var(--color-btn-bg, #434b5b);
+            color: var(--color-text-primary, #fff);
+        }
+
+        .custom-color button:hover {
+            background: var(--color-btn-hover, #576175);
+        }
+
+        .color-preview {
+            width: 120px;
+            height: 32px;
+            border: 1px solid var(--color-btn-border, #69697d);
+            /*border-radius: 6px;*/
+            background: var(--color-panel-bg, #20242a);
+            color: var(--color-text-primary, #fff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            transition: background 0.15s ease, color 0.15s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Choose a color</h1>
+    <div class="color-preview"></div>
+</div>
+
+<div class="color-grid-container">
+    <div class="color-grid"></div>
+</div>
+
+
+<div class="custom-color">
+    <input type="text" id="color-input" placeholder="Enter color name or #hex">
+    <button id="apply-color">Apply</button>
+</div>
+
+<script>
+    const faColors = [
+        // BROWNS
+        "Wheat","Tan","Khaki","Burlywood","Darkkhaki","Rosybrown","Sandybrown","Peru","Chocolate","Sienna","Saddlebrown","Brown",
+        // REDS
+        "Mistyrose","Pink","Lightpink","Darksalmon","Lightsalmon","Lightcoral","Salmon","Tomato","Coral","Indianred","Hotpink","Firebrick","Crimson","Red","Darkred","Maroon",
+        // ORANGES
+        "Peachpuff","Moccasin","Navajowhite","Orange","Darkorange","Orangered",
+        // YELLOWS
+        "Lightgoldenrodyellow","Lightyellow","Lemonchiffon","Palegoldenrod","Yellow","Gold","Goldenrod","Darkgoldenrod",
+        // GREENS
+        "Mintcream","Honeydew","Darkseagreen","Lightgreen","Palegreen","Mediumspringgreen","Springgreen","Mediumseagreen","Lightseagreen","Seagreen","Yellowgreen","Greenyellow","Lawngreen","Chartreuse","Lime","Limegreen","Forestgreen","Green","Darkgreen","Darkolivegreen","Olivedrab","Olive",
+        // BLUES
+        "Aliceblue","Azure","Lightcyan","Paleturquoise","Powderblue","Lightblue","Lightsteelblue","Skyblue","Lightskyblue","Aquamarine","Mediumaquamarine","Cadetblue","Mediumturquoise","Turquoise","Aqua","Cyan","Darkturquoise","Deepskyblue","Dodgerblue","Darkcyan","Teal","Cornflowerblue","Steelblue","Royalblue","Blue","Mediumblue","Darkblue","Navy","Midnightblue","Darkslateblue","Slateblue",
+        // PURPLES
+        "Gainsboro","Lavender","Thistle","Plum","Violet","Palevioletred","Orchid","Mediumorchid","Mediumpurple","Mediumslateblue","Blueviolet","Darkorchid","Darkviolet","Darkmagenta","Purple","Mediumvioletred","Deeppink","Magenta","Fuchsia","Indigo",
+        // OTHER COLORS
+        "Antiquewhite","Beige","Bisque","Blanchedalmond","Cornsilk","Floralwhite","Ghostwhite","Ivory","Lavenderblush","Linen","Oldlace","Papayawhip","Seashell","Snow","White","Whitesmoke","Darkgray","Gray","Lightgray","Silver","Dimgray","Lightslategray","Slategray","Darkslategray","Black"
+    ];
+
+    const preview = document.querySelector('.color-preview');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.querySelector('.color-grid');
+        const input = document.getElementById('color-input');
+        const applyBtn = document.getElementById('apply-color');
+
+        faColors.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.style.backgroundColor = color;
+            swatch.title = color;
+            swatch.addEventListener('click', () => {
+                input.value = color;
+                sendColorToOpener(color);
+            });
+            grid.appendChild(swatch);
+
+            swatch.addEventListener('mouseenter', () => {
+                updatePreview(color)
+            });
+
+            swatch.addEventListener('mouseleave', () => {
+                updatePreview(color)
+            });
+        });
+
+        applyBtn.addEventListener('click', () => {
+            const color = input.value.trim();
+            if (!color) return;
+            sendColorToOpener(color);
+        });
+
+        function sendColorToOpener(color) {
+            if (window.opener && !window.opener.closed) {
+                const event = new CustomEvent('colorSelected', { detail: color });
+                window.opener.dispatchEvent(event);
+            }
+        }
+
+        function getContrastColor(bgColor) {
+            const tempEl = document.createElement('div');
+            tempEl.style.color = bgColor;
+            document.body.appendChild(tempEl);
+
+            const computed = getComputedStyle(tempEl).color; // get RGB
+            document.body.removeChild(tempEl);
+
+            const rgb = computed.match(/\d+/g).map(Number);
+            const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+
+            return brightness > 125 ? '#000' : '#fff'; // dark text on light bg, white on dark bg
+        }
+
+        function updatePreview(color) {
+            preview.style.background = color;
+            preview.style.color = getContrastColor(color);
+            preview.textContent = color;
+        }
+    });
+</script>
+</body>
+</html>

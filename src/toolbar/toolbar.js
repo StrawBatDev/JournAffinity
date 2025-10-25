@@ -2,8 +2,43 @@ import {wrapOrInsertTag} from "../editor/wrapOrInsertTag";
 import * as toolbar from "../constants/toolbar";
 import Storehouse from "storehouse-js";
 import * as localStorage from "../constants/localStorage";
+import {openColorPicker} from "../modal/colorPicker";
 
-export function registerToolbarButtons(editor) {
+function registerToolbarButtons(editor) {
+
+    // document.getElementById('cut').addEventListener('click', () => {
+    // });
+    // document.getElementById('cut2').addEventListener('click', () => {
+    // });
+    // document.getElementById('copy').addEventListener('click', () => {
+    // });
+    // document.getElementById('copy2').addEventListener('click', () => {
+    // });
+    // document.getElementById('paste').addEventListener('click', () => {
+    // });
+    // document.getElementById('paste2').addEventListener('click', () => {
+    // });
+
+    // document.getElementById('icon').addEventListener('click', () => {
+    // });
+    // document.getElementById('icon2').addEventListener('click', () => {
+    // });
+    // document.getElementById('icon-username').addEventListener('click', () => {
+    // });
+    // document.getElementById('icon-username2').addEventListener('click', () => {
+    // });
+    // document.getElementById('icon-username-legacy').addEventListener('click', () => {
+    // });
+    // document.getElementById('icon-username-legacy2').addEventListener('click', () => {
+    // });
+    // document.getElementById('username-only').addEventListener('click', () => {
+    // });
+    // document.getElementById('username-only2').addEventListener('click', () => {
+    // });
+    // document.getElementById('navigation').addEventListener('click', () => {
+    // });
+    // document.getElementById('navigation2').addEventListener('click', () => {
+    // });
     document.getElementById('bold').addEventListener('click', () => wrapOrInsertTag(editor, 'b'));
     document.getElementById('bold2').addEventListener('click', () => wrapOrInsertTag(editor, 'b'));
     document.getElementById('italic').addEventListener('click', () => wrapOrInsertTag(editor, 'i'));
@@ -24,6 +59,8 @@ export function registerToolbarButtons(editor) {
     document.getElementById('sup2').addEventListener('click', () => wrapOrInsertTag(editor, 'sup'))
     document.getElementById('line').addEventListener('click', () => wrapOrInsertTag(editor, '-----'))
     document.getElementById('line2').addEventListener('click', () => wrapOrInsertTag(editor, '-----'))
+    document.getElementById('color').addEventListener('click', () => openColorPicker(editor, "color"));
+    document.getElementById('color2').addEventListener('click', () => openColorPicker(editor, "color"));
     document.getElementById('h1').addEventListener('click', () => wrapOrInsertTag(editor, 'h1'));
     document.getElementById('h2').addEventListener('click', () => wrapOrInsertTag(editor, 'h2'))
     document.getElementById('h3').addEventListener('click', () => wrapOrInsertTag(editor, 'h3'));
@@ -40,7 +77,19 @@ export function registerToolbarButtons(editor) {
     document.getElementById('undoBtn2').addEventListener('click', () => editor.trigger('keyboard', 'undo', null));
     document.getElementById('redoBtn').addEventListener('click', () => editor.trigger('keyboard', 'redo', null));
     document.getElementById('redoBtn2').addEventListener('click', () => editor.trigger('keyboard', 'redo', null));
+
+    window.addEventListener('colorSelected', (e) => {
+
+        console.log(e)
+        const color = e.detail;
+        if (!color) return;
+
+        // Use wrapOrInsertTag to insert BBCode
+        wrapOrInsertTag(editor, `color=${color}`);
+    });
 }
+
+export default registerToolbarButtons
 
 export let initScrollBarSync = (current, update) => {
     let checkbox = document.querySelector('#sync-scroll-checkbox');

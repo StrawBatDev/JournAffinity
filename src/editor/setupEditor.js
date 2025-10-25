@@ -1,6 +1,6 @@
 import * as editorConfig from "../constants/editorConfig";
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/+esm';
-import {registerToolbarButtons} from "../toolbar/toolbar";
+import registerToolbarButtons from "../toolbar/toolbar";
 import {convertBbcodeToHtml} from "../preview/preview";
 import {registerCopyButton, registerEditorDivider, registerResetButton} from "./editor";
 import {registerYoutubeWrapperClick} from "../preview/youtubeWrapper";

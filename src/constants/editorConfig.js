@@ -2,8 +2,9 @@ export const BBCODE_MONACO_LANGUAGE_ID = "preview"
 
 export const confirmationMessage = 'Are you sure you want to reset? Your changes will be lost.';
 
-export const SUPPORTED_TAGS = ['b', 'i', 'u', 's', 'quote', 'url', 'h1', 'h2', 'h3', 'h4', 'h5', 'left', 'center', 'right', 'spoiler', 'sup', 'sub',
-    'color', 'left', 'center', 'right', 'yt'
+export const SUPPORTED_TAGS = [
+    'b', 'i', 'u', 's', 'h1', 'h2', 'h3', 'h4', 'h5', 'left', 'center', 'right', 'sub', 'sup', 'quote', '-----',
+    'color'
 ];
 
 export const TAG_PATTERN = [
