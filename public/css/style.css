@@ -1,12 +1,12 @@
 html, body {
-    color: #333;
+    color: var(--color-white);
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     font-family: Helvetica, arial, freesans, clean, sans-serif;
     font-size: 1em;
     line-height: 1.5em;
-    background-color: #1b1b1d;
+    background-color: var(--color-grey-0);
     overscroll-behavior-y: none;
 }
 
@@ -31,12 +31,25 @@ a:link,
 a:visited,
 a:hover,
 a:active {
-    color: #333;
+    color: var(--color-accent);
     text-decoration: none;
 }
 
 img {
     border: none;
+}
+
+button {
+    padding: var(--toolbar-padding);
+    color: var(--color-panel-fore) !important;
+    background: var(--color-btn-bg);
+    border: 1px solid var(--color-btn-border);
+    border-radius: 0;
+    flex: 0 0 auto;
+}
+
+button:hover {
+    background: var(--color-btn-hover);
 }
 
 /* Apply standard button styling only to header buttons, not checkboxes */
@@ -63,17 +76,6 @@ img {
 .button.checkbox + .button.checkbox {
     margin-left: var(--space-lg); /* adds extra space between checkboxes */
 }
-
-/*!* All header buttons *!*/
-/*#menu-items .button {*/
-/*    height: 36px;            !* set same height for all buttons *!*/
-/*    display: inline-flex;     !* allow flex alignment inside button *!*/
-/*    align-items: center;      !* vertically center icon/text *!*/
-/*    justify-content: center;  !* optional: center content horizontally *!*/
-/*    padding: 0 12px;          !* horizontal padding only *!*/
-/*    gap: 6px;                 !* space between icon and text *!*/
-/*    box-sizing: border-box;   !* include borders/padding in height *!*/
-/*}*/
 
 #menu-items > div {
     display: flex;
@@ -102,6 +104,26 @@ img {
     margin-right: var(--space-lg);
 }
 
+/* Fixes content being pushed off the right edge! */
+header,
+.toolbar.header,
+.toolbar.footer {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box; /* include padding in width */
+    padding: var(--space-sm) var(--space-lg);
+}
+
+.toolbar.footer > .input-group {
+    display: flex;
+    flex: 1 1 auto; /* take remaining space */
+    gap: 8px; /* spacing between input and button */
+    min-width: 0; /* allows children to shrink properly */
+    align-items: center;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -109,7 +131,7 @@ header {
     padding: var(--space-sm) var(--space-lg);
     width: 100%;
     background-color: var(--color-header);
-    font-size: var(--font-sm);
+    font-size: var(--font-md);
     color: var(--color-text-primary);
 }
 
@@ -149,12 +171,6 @@ header a:hover {
     user-select: none;
 }
 
-header input[type="checkbox"] {
-    vertical-align: middle;
-    margin-right: var(--space-sm);
-    margin-top: 0;
-}
-
 #github {
     padding-right: 32px;
 }
@@ -176,9 +192,16 @@ footer {
     width: 100%;
     background-color: var(--color-page-bg);
     color: var(--color-panel-fore);
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+    text-align: start;
+    display: flex;            /* keep flex layout */
+    align-items: center;      /* vertically center items */
+    gap: 15px;
+    border-top: 1px solid var(--color-btn-border);
+}
+
+/* Push GitHub icon to the end */
+footer #github {
+    margin-left: auto;
 }
 
 #container {
@@ -228,7 +251,7 @@ footer {
 
 .split-divider {
     width: 5px;
-    background: var(--color-btn-hover);
+    background: var(--color-btn-bg);
     cursor: col-resize;
     z-index: 10;
     position: relative;
@@ -238,33 +261,32 @@ footer {
 }
 
 .split-divider.hover {
-    background: var(--color-btn-border);
-    box-shadow: 0 0 var(--space-sm) var(--color-accent); /* glow on hover */
+    background: var(--color-accent);
+    box-shadow: 0 0 var(--space-xs) var(--color-accent); /* glow on hover */
     transform: scaleX(1.3); /* subtle visual growth */
 }
 
 .split-divider.active {
     background: var(--color-panel-fore);
-    box-shadow: 0 0 var(--space-sm) var(--color-accent); /* highlight when dragging */
+    box-shadow: 0 0 var(--space-xs) var(--color-accent); /* highlight when dragging */
 }
 
-/* Optional: add a “grip” pattern in the center */
 .split-divider::before {
     content: "";
     position: absolute;
     top: 0;
     bottom: 0;
     left: 50%;
-    width: 2px;
-    margin-left: -1px; /* center it */
+    width: 4px;
+    margin-left: -2px;
     background: repeating-linear-gradient(
-            to bottom,
-            var(--color-split-divider) 0,
-            var(--color-split-divider) 4px,
-            transparent 4px,
-            transparent 8px
+            45deg,
+            var(--color-btn-border),
+            var(--color-btn-border) 2px,
+            transparent 2px,
+            transparent 4px
     );
-    pointer-events: none; /* don’t block dragging */
+    pointer-events: none;
 }
 
 .split-container,
@@ -280,16 +302,35 @@ footer {
     gap: 6px;
 }
 
-button {
-    padding: 4px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #f0f0f0;
-    cursor: pointer;
+.tooltip {
+    position: relative;
+    display: inline-block;
 }
 
-button:hover {
-    background: #ddd;
+.tooltip .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    width: max-content;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-panel-fore);
+    text-align: center;
+    font-size: var(--font-sm);
+    padding: var(--space-sm) var(--space-sm);
+    border-radius: var(--radius);
+    position: absolute;
+    z-index: 100;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    border: 1px solid var(--color-btn-border);
+    pointer-events: none;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
 #bold {
@@ -309,18 +350,32 @@ button:hover {
 }
 
 .dropdown {
+    content: '▾';
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    top: calc(100% - 1px); /* move it up by 1px */
+    left: 0;
+    background-color: var(--color-dropdown-bg);
+    min-width: 120px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    overflow-y: auto;
+    max-height: 300px;
+    margin-top: 0;
     flex-direction: column;
-    /*min-width: 200px; !* sets a wider minimum width *!*/
-    padding: 0.25rem 0; /* optional padding for spacing */
-    z-index: 1000; /* ensures it appears above other elements */
+}
+
+/* Show on hover */
+.dropdown:hover .dropdown-content {
+    display: flex;
 }
 
 .dropdown-content button {
@@ -331,17 +386,150 @@ button:hover {
     display: flex;
 }
 
+input {
+    padding: var(--space-sm);
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-page-bg);
+}
+
+.toolbar {
+    width: fit-content;
+    margin: var(--space-sm);
+    padding: var(--space-sm);
+    background-color: var(--color-panel-bg);
+    border: 1px solid var(--color-btn-border);
+    color: var(--color-panel-fore);
+}
+
+.toolbar.header,
+.toolbar.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    gap: var(--space-sm);
+    border: 0;
+    border-top: 1px solid var(--color-btn-border);
+    padding: var(--space-sm) var(--space-lg);
+    width: 100%;
+}
+
+.toolbar.header {
+    border-top: 0;
+    border-bottom: 1px solid var(--color-btn-border);
+}
+
+.toolbar input {
+    flex: 1 1 auto; /* grows to fill remaining space */
+    min-width: 0; /* necessary for flexbox shrink */
+    padding: var(--space-sm);
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-page-bg);
+}
+
+.toolbar button {
+    flex: 0 0 auto; /* keep buttons their natural size */
+}
+
+/*
+    Toolbar container styles, these are declared to show/hide the intended style
+    These are utilised as id's rather than classes
+ */
+#toolbar-style-simple,
+#toolbar-style-menubar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--toolbar-gap);
+}
+
+/* Row and column layouts */
+.toolbar-row {
+    display: flex;
+    gap: var(--space-xs); /* Gap between buttons laid out horizontally */
+    flex-wrap: nowrap;
+}
+
+.toolbar-column {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-panel-fore);
+}
+
+/* Responsive stacking for smaller screens */
+@media (max-width: var(--toolbar-max-width)) {
+    #toolbar-style-simple {
+        flex-direction: column;
+    }
+
+    .toolbar-column {
+        width: 100%;
+    }
+}
+
 html, body {
-    background-color: #1b1b1d;
+    background-color: var(--color-grey-0);
     color-scheme: dark; /* helps scrollbars match the dark theme */
+}
+/* Row layout */
+.row-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 60px;              /* Keeps header height fixed */
+    padding: 0 10px;
+}
+
+/* Text styling */
+.row-text {
+    white-space: nowrap;       /* Prevent line breaks */
+}
+
+/* Hide text on small screens */
+@media (max-width: 500px) {
+    .row-text {
+        display: none;
+    }
+}
+
+/* Kofi button styling */
+#wiggleBtn {
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+    display: block;
+    transition: transform 0.1s;
+}
+
+/* GitHub icon */
+#github img {
+    width: 32px;
+    height: auto;
+}
+
+/* Smoother wiggle + grow animation */
+@keyframes wigglePulse {
+    0%   { transform: rotate(0deg) scale(1); }
+    15%  { transform: rotate(5deg) scale(1.1); }
+    30%  { transform: rotate(-5deg) scale(1.05); }
+    45%  { transform: rotate(3deg) scale(1.08); }
+    60%  { transform: rotate(-3deg) scale(1.05); }
+    75%  { transform: rotate(2deg) scale(1.08); }
+    100% { transform: rotate(0deg) scale(1); }
+}
+
+.wiggling {
+    animation: wigglePulse 0.6s ease-in-out;
+}
+
+/* Make each button/checkbox container a flex row */
+.button.checkbox {
+    display: flex;
+    align-items: center;  /* Vertically center the checkbox and label */
+    gap: 5px;             /* Space between checkbox and label */
 }
 
 /* Firefox scrollbar colors */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #444 #1b1b1d;
+    scrollbar-color: var(--color-lt-grey-3) var(--color-grey-0);
 }
-
-/*body.overflow-debug * {*/
-/*    outline: 1px solid rgba(255, 0, 0, 0.3);*/
-/*}*/

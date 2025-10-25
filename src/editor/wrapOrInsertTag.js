@@ -1,15 +1,36 @@
 import * as editorConfig from "../constants/editorConfig";
+import {MENTION_PATTERNS} from "../constants/editorConfig";
 
 export function wrapOrInsertTag(editor, tag) {
-    // Extract the base tag (before any =, e.g., color=red -> color)
-    const baseTag = tag.split('=')[0];
-
-    if (!editorConfig.SUPPORTED_TAGS.includes(baseTag)) return; // ignore unsupported tags
-
     const model = editor.getModel();
     let selection = editor.getSelection();
     let text = model.getValueInRange(selection);
     editor.pushUndoStop();
+
+    // Check if the tag is a mention
+    for (const pattern of MENTION_PATTERNS) {
+        const match = tag.match(pattern);
+        if (match) {
+            // Example: simply insert the tag as-is
+            editor.executeEdits('preview', [{
+                range: selection,
+                text: tag,
+                forceMoveMarkers: true
+            }]);
+
+            const pos = selection.getStartPosition();
+            editor.setPosition({
+                lineNumber: pos.lineNumber,
+                column: pos.column + tag.length
+            });
+            editor.focus();
+            return; // stop further processing
+        }
+    }
+
+    // Extract the base tag (before any =, e.g., color=red -> color)
+    const baseTag = tag.split('=')[0];
+    if (!editorConfig.SUPPORTED_TAGS.includes(baseTag)) return; // ignore unsupported tags
 
     // Special case for literal dashes
     if (tag === '-----') {

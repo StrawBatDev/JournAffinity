@@ -9,11 +9,11 @@ const img_src_user_gif = (user) => `
     class="fa-icon"
     onerror="this.style.display='none'">`
 
-const faMention = (user, {includeGif = false, single = false} = {}) => `
+const faMention = (user, { includeGif = false, single = false, showText = true, prefix = '' } = {}) => `
 <span class="fa-mention${single ? ' single' : ''}">
     ${a_href_fa_username(user)}
     ${includeGif ? img_src_user_gif(user) : ''}
-    ${user}
+    ${showText ? prefix + user : ''}
 </a>
 </span>`;
 
@@ -56,29 +56,28 @@ const bbcode = [
         regex: /\[color=(#[0-9A-F]{3,6}|[a-z]+)](.*?)\[\/color]/gi,
     },
     {
-        id: '🐭Username',
-        html: (_, user) => faMention(user, {includeGif: true}),
-        regex: /@@([a-z0-9_-]+)/gi,
-    },
-    {
         id: '🐭Username(Legacy)',
-        html: (_, user) => faMention(user, {includeGif: true}),
-        regex: /:icon([a-z0-9_-]+):/gi,
+        html: (_, user) => faMention(user, { includeGif: true, single: true, showText: false }),
+        regex: /:([a-z0-9_-]+)icon:/gi,  // :usernameicon: → icon only
     },
     {
-        id: '🐭',
-        html: (_, user) => faMention(user, {includeGif: true, single: true}),
-        regex: /:([a-z0-9_-]+)icon:/gi,
+        id: '🐭Username(Legacy2)',
+        html: (_, user) => faMention(user, { includeGif: true }),
+        regex: /:icon([a-z0-9_-]+):/gi,  // :iconusername: → icon + text
     },
     {
-        id: 'Username',
-        html: (_, user) => faMention(user, {single: true}),
-        regex: /@([a-zA-Z0-9_-]+)/gi,
+        id: '🐭UsernameCombined',
+        html: (_, user) => {
+            const icon = faMention(user, { includeGif: true, single: true, showText: false });
+            const text = faMention(user, { single: true });
+            return `${icon}${text}`;
+        },
+        regex: /([a-z0-9_-]+)icon:@([a-z0-9_-]+)/gi, // usernameicon:@username → icon + text
     },
     {
-        id: 'Username',
-        html: (_, user) => faMention(user, {single: true}),
-        regex: /:([a-zA-Z0-9_-]+):/gi,  // matches :username:
+        id: 'UsernameSimple',
+        html: (_, user) => faMention(user, { single: true, prefix: '@' }),
+        regex: /@([a-zA-Z0-9_-]+)/gi, // @username → text only with @
     },
     {
         id: 'Bracketed Links',
@@ -161,3 +160,8 @@ export let convertBbcodeToHtml = async (input) => {
     });
     document.querySelector('#output').innerHTML = DOMPurify.sanitize(html);
 };
+
+// These are declared here for the mention picker
+window.a_href_fa_username = a_href_fa_username;
+window.img_src_user_gif = img_src_user_gif;
+window.faMention = faMention;

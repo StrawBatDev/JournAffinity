@@ -3,89 +3,89 @@ import * as toolbar from "../constants/toolbar";
 import Storehouse from "storehouse-js";
 import * as localStorage from "../constants/localStorage";
 import {openColorPicker} from "../modal/colorPicker";
+import {openMentionPicker} from "../modal/mentionPicker";
+import {saveScrollBarSettings, saveToolbarStyleSettings} from "../load/load";
 
 function registerToolbarButtons(editor) {
+    const toolbarActions = {
+        'undoBtn': () => editor.trigger('keyboard', 'undo', null),
+        'undoBtn2': () => editor.trigger('keyboard', 'undo', null),
+        'redoBtn': () => editor.trigger('keyboard', 'redo', null),
+        'redoBtn2': () => editor.trigger('keyboard', 'redo', null),
 
-    // document.getElementById('cut').addEventListener('click', () => {
-    // });
-    // document.getElementById('cut2').addEventListener('click', () => {
-    // });
-    // document.getElementById('copy').addEventListener('click', () => {
-    // });
-    // document.getElementById('copy2').addEventListener('click', () => {
-    // });
-    // document.getElementById('paste').addEventListener('click', () => {
-    // });
-    // document.getElementById('paste2').addEventListener('click', () => {
-    // });
+        'cutBtn': () => toolbarAction('editor.action.clipboardCutAction'),
+        'cutBtn2': () => toolbarAction('editor.action.clipboardCutAction'),
+        'copyBtn': () => toolbarAction('editor.action.clipboardCopyAction'),
+        'copyBtn2': () => toolbarAction('editor.action.clipboardCopyAction'),
+        'pasteBtn': () => toolbarAction('editor.action.clipboardPasteAction'),
+        'pasteBtn2': () => toolbarAction('editor.action.clipboardPasteAction'),
+        'deleteBtn': () => toolbarAction('editor.action.clipboardDeleteAction'),
+        'deleteBtn2': () => toolbarAction('editor.action.clipboardDeleteAction'),
 
-    // document.getElementById('icon').addEventListener('click', () => {
-    // });
-    // document.getElementById('icon2').addEventListener('click', () => {
-    // });
-    // document.getElementById('icon-username').addEventListener('click', () => {
-    // });
-    // document.getElementById('icon-username2').addEventListener('click', () => {
-    // });
-    // document.getElementById('icon-username-legacy').addEventListener('click', () => {
-    // });
-    // document.getElementById('icon-username-legacy2').addEventListener('click', () => {
-    // });
-    // document.getElementById('username-only').addEventListener('click', () => {
-    // });
-    // document.getElementById('username-only2').addEventListener('click', () => {
-    // });
-    // document.getElementById('navigation').addEventListener('click', () => {
-    // });
-    // document.getElementById('navigation2').addEventListener('click', () => {
-    // });
-    document.getElementById('bold').addEventListener('click', () => wrapOrInsertTag(editor, 'b'));
-    document.getElementById('bold2').addEventListener('click', () => wrapOrInsertTag(editor, 'b'));
-    document.getElementById('italic').addEventListener('click', () => wrapOrInsertTag(editor, 'i'));
-    document.getElementById('italic2').addEventListener('click', () => wrapOrInsertTag(editor, 'i'));
-    document.getElementById('underline').addEventListener('click', () => wrapOrInsertTag(editor, 'u'));
-    document.getElementById('underline2').addEventListener('click', () => wrapOrInsertTag(editor, 'u'));
-    document.getElementById('strikethrough').addEventListener('click', () => wrapOrInsertTag(editor, 's'));
-    document.getElementById('strikethrough2').addEventListener('click', () => wrapOrInsertTag(editor, 's'))
-    document.getElementById('align-left').addEventListener('click', () => wrapOrInsertTag(editor, 'left'));
-    document.getElementById('align-left2').addEventListener('click', () => wrapOrInsertTag(editor, 'left'))
-    document.getElementById('align-center').addEventListener('click', () => wrapOrInsertTag(editor, 'center'));
-    document.getElementById('align-center2').addEventListener('click', () => wrapOrInsertTag(editor, 'center'))
-    document.getElementById('align-right').addEventListener('click', () => wrapOrInsertTag(editor, 'right'));
-    document.getElementById('align-right2').addEventListener('click', () => wrapOrInsertTag(editor, 'right'))
-    document.getElementById('sub').addEventListener('click', () => wrapOrInsertTag(editor, 'sub'));
-    document.getElementById('sub2').addEventListener('click', () => wrapOrInsertTag(editor, 'sub'))
-    document.getElementById('sup').addEventListener('click', () => wrapOrInsertTag(editor, 'sup'));
-    document.getElementById('sup2').addEventListener('click', () => wrapOrInsertTag(editor, 'sup'))
-    document.getElementById('line').addEventListener('click', () => wrapOrInsertTag(editor, '-----'))
-    document.getElementById('line2').addEventListener('click', () => wrapOrInsertTag(editor, '-----'))
-    document.getElementById('color').addEventListener('click', () => openColorPicker(editor, "color"));
-    document.getElementById('color2').addEventListener('click', () => openColorPicker(editor, "color"));
-    document.getElementById('h1').addEventListener('click', () => wrapOrInsertTag(editor, 'h1'));
-    document.getElementById('h2').addEventListener('click', () => wrapOrInsertTag(editor, 'h2'))
-    document.getElementById('h3').addEventListener('click', () => wrapOrInsertTag(editor, 'h3'));
-    document.getElementById('h4').addEventListener('click', () => wrapOrInsertTag(editor, 'h4'))
-    document.getElementById('h5').addEventListener('click', () => wrapOrInsertTag(editor, 'h5'));
-    document.getElementById('h1_2').addEventListener('click', () => wrapOrInsertTag(editor, 'h1'));
-    document.getElementById('h2_2').addEventListener('click', () => wrapOrInsertTag(editor, 'h2'))
-    document.getElementById('h3_2').addEventListener('click', () => wrapOrInsertTag(editor, 'h3'));
-    document.getElementById('h4_2').addEventListener('click', () => wrapOrInsertTag(editor, 'h4'))
-    document.getElementById('h5_2').addEventListener('click', () => wrapOrInsertTag(editor, 'h5'));
-    document.getElementById('quote').addEventListener('click', () => wrapOrInsertTag(editor, 'quote'));
-    document.getElementById('quote2').addEventListener('click', () => wrapOrInsertTag(editor, 'quote'));
-    document.getElementById('undoBtn').addEventListener('click', () => editor.trigger('keyboard', 'undo', null));
-    document.getElementById('undoBtn2').addEventListener('click', () => editor.trigger('keyboard', 'undo', null));
-    document.getElementById('redoBtn').addEventListener('click', () => editor.trigger('keyboard', 'redo', null));
-    document.getElementById('redoBtn2').addEventListener('click', () => editor.trigger('keyboard', 'redo', null));
+        'bold': () => wrapOrInsertTag(editor, 'b'),
+        'bold2': () => wrapOrInsertTag(editor, 'b'),
+        'italic': () => wrapOrInsertTag(editor, 'i'),
+        'italic2': () => wrapOrInsertTag(editor, 'i'),
+        'underline': () => wrapOrInsertTag(editor, 'u'),
+        'underline2': () => wrapOrInsertTag(editor, 'u'),
+        'strikethrough': () => wrapOrInsertTag(editor, 's'),
+        'strikethrough2': () => wrapOrInsertTag(editor, 's'),
+
+        'align-left': () => wrapOrInsertTag(editor, 'left'),
+        'align-left2': () => wrapOrInsertTag(editor, 'left'),
+        'align-center': () => wrapOrInsertTag(editor, 'center'),
+        'align-center2': () => wrapOrInsertTag(editor, 'center'),
+        'align-right': () => wrapOrInsertTag(editor, 'right'),
+        'align-right2': () => wrapOrInsertTag(editor, 'right'),
+
+        'sub': () => wrapOrInsertTag(editor, 'sub'),
+        'sub2': () => wrapOrInsertTag(editor, 'sub'),
+        'sup': () => wrapOrInsertTag(editor, 'sup'),
+        'sup2': () => wrapOrInsertTag(editor, 'sup'),
+
+        'line': () => wrapOrInsertTag(editor, '-----'),
+        'line2': () => wrapOrInsertTag(editor, '-----'),
+
+        'color': openColorPicker,
+        'color2': openColorPicker,
+        'mention': openMentionPicker,
+        'mention2': openMentionPicker,
+
+        'h1': () => wrapOrInsertTag(editor, 'h1'),
+        'h2': () => wrapOrInsertTag(editor, 'h2'),
+        'h3': () => wrapOrInsertTag(editor, 'h3'),
+        'h4': () => wrapOrInsertTag(editor, 'h4'),
+        'h5': () => wrapOrInsertTag(editor, 'h5'),
+        'h1_2': () => wrapOrInsertTag(editor, 'h1'),
+        'h2_2': () => wrapOrInsertTag(editor, 'h2'),
+        'h3_2': () => wrapOrInsertTag(editor, 'h3'),
+        'h4_2': () => wrapOrInsertTag(editor, 'h4'),
+        'h5_2': () => wrapOrInsertTag(editor, 'h5'),
+
+        'quote': () => wrapOrInsertTag(editor, 'quote'),
+        'quote2': () => wrapOrInsertTag(editor, 'quote')
+    };
+
+    function toolbarAction(editorAction) {
+        editor.focus();
+        editor.trigger('toolbar', editorAction);
+    }
+
+    Object.entries(toolbarActions).forEach(([id, action]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', action);
+    });
 
     window.addEventListener('colorSelected', (e) => {
-
-        console.log(e)
         const color = e.detail;
         if (!color) return;
-
-        // Use wrapOrInsertTag to insert BBCode
         wrapOrInsertTag(editor, `color=${color}`);
+    });
+
+    window.addEventListener('mentionSelected', (e) => {
+        const mention = e.detail;
+        if (!mention) return;
+        wrapOrInsertTag(editor, mention);
     });
 }
 
@@ -115,14 +115,4 @@ export let initToolBarStyleSync = (current, update) => {
         toolbar.simpleToolbar.style.display = checked ? 'none' : 'flex';
         toolbar.dropdownToolbar.style.display = checked ? 'flex' : 'none';
     });
-};
-
-let saveScrollBarSettings = (settings) => {
-    let expiredAt = new Date(2099, 1, 1);
-    Storehouse.setItem(localStorage.localStorageNamespace, localStorage.localStorageScrollBarKey, settings, expiredAt);
-};
-
-let saveToolbarStyleSettings = (settings) => {
-    let expiredAt = new Date(2099, 1, 1);
-    Storehouse.setItem(localStorage.localStorageNamespace, localStorage.localStorageScrollBarKey, settings, expiredAt);
 };

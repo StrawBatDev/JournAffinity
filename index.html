@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" type="text/css" href="css/theme.css">
     <link rel="stylesheet" type="text/css" href="css/style.css?v=1.10.1">
-    <link rel="stylesheet" type="text/css" href="css/toolbar.css?v=1.10.1">
     <link rel="stylesheet" type="text/css" href="css/preview.css?v=1.10.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -57,53 +56,59 @@
         <button id="reset-button" class="button nuke">
             <img src="image/nuke.svg" class="svg-icon" alt="Reset button">
         </button>
-
-        <div id="sync-button" class="button checkbox">
-            <input type="checkbox" id="sync-scroll-checkbox">
-            <label for="sync-scroll-checkbox">Sync scroll</label>
-        </div>
-
-        <div id="toolbar-style-button" class="button checkbox"><input type="checkbox" id="toolbar-style-checkbox"><label
-                for="toolbar-style-checkbox">Advanced Toolbar</label></div>
-
     </div>
-    <div id="github"><a href="https://github.com/StrawBatDev/JournAffinity"><img
-            src="image/GitHub-Mark-Light-32px.webp"></a></div>
+
+    <div class="row-container">
+        <a href="https://ko-fi.com/strawbat" target="_blank" rel="noopener noreferrer">
+            <img id="wiggleBtn" src="public/image/kofi.png" alt="Click Me">
+        </a>
+    </div>
 </header>
+<script>
+    const button = document.getElementById('wiggleBtn');
+
+    function triggerWiggle() {
+        button.classList.add('wiggling');
+        setTimeout(() => button.classList.remove('wiggling'), 600); // Matches animation duration
+    }
+
+    // Wiggle every 3 seconds
+    setInterval(triggerWiggle, 3000);
+</script>
 <div class=toolbar id="toolbar">
-    <div id="toolbar-simple">
+    <div id="toolbar-style-simple">
         <div class="toolbar-column">
             Edit
             <div class="toolbar-row">
 
                 <div class="tooltip">
                     <button id="undoBtn" class="fa fa-undo"></button>
-                    <span class="tooltiptext">Undo</span>
+                    <span class="tooltip-text">Undo</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="redoBtn" class="fa fa-repeat"></button>
-                    <span class="tooltiptext">Redo</span>
+                    <span class="tooltip-text">Redo</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="cutBtn" class="fa fa-cut"></button>
-                    <span class="tooltiptext">Cut</span>
+                    <span class="tooltip-text">Cut</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="copyBtn" class="fa fa-copy"></button>
-                    <span class="tooltiptext">Copy</span>
+                    <span class="tooltip-text">Copy</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="pasteBtn" class="fa fa-paste"></button>
-                    <span class="tooltiptext">Paste</span>
+                    <span class="tooltip-text">Paste</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="deleteBtn" class="fa fa-eraser"></button>
-                    <span class="tooltiptext">Eraser</span>
+                    <span class="tooltip-text">Eraser</span>
                 </div>
 
             </div>
@@ -113,42 +118,42 @@
             <div class="toolbar-row">
                 <div class="tooltip">
                     <button id="bold" class="fa fa-bold"></button>
-                    <span class="tooltiptext">Bold</span>
+                    <span class="tooltip-text">Bold</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="italic" class="fa fa-italic"></button>
-                    <span class="tooltiptext">Italic</span>
+                    <span class="tooltip-text">Italic</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="underline" class="fa fa-underline"></button>
-                    <span class="tooltiptext">Underline</span>
+                    <span class="tooltip-text">Underline</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="strikethrough" class="fa fa-strikethrough"></button>
-                    <span class="tooltiptext">Strikethrough</span>
+                    <span class="tooltip-text">Strikethrough</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="color" class="fa fa-paint-brush"></button>
-                    <span class="tooltiptext">Color</span>
+                    <span class="tooltip-text">Color</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="quote" class="fa fa-quote-left"></button>
-                    <span class="tooltiptext">Quote</span>
+                    <span class="tooltip-text">Quote</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="sup" class="fa fa-arrow-up"></button>
-                    <span class="tooltiptext">Size Up</span>
+                    <span class="tooltip-text">Size Up</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="sub" class="fa fa-arrow-down"></button>
-                    <span class="tooltiptext">Size Down</span>
+                    <span class="tooltip-text">Size Down</span>
                 </div>
             </div>
         </div>
@@ -158,17 +163,17 @@
             <div class="toolbar-row">
                 <div class="tooltip">
                     <button id="align-left" class="fa fa-align-left"></button>
-                    <span class="tooltiptext">Align Left</span>
+                    <span class="tooltip-text">Align Left</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="align-center" class="fa fa-align-center"></button>
-                    <span class="tooltiptext">Align Center</span>
+                    <span class="tooltip-text">Align Center</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="align-right" class="fa fa-align-right"></button>
-                    <span class="tooltiptext">Align Right</span>
+                    <span class="tooltip-text">Align Right</span>
                 </div>
             </div>
         </div>
@@ -178,27 +183,27 @@
             <div class="toolbar-row">
                 <div class="tooltip">
                     <button id="h1" class="fa fa-header">1</button>
-                    <span class="tooltiptext">Header 1</span>
+                    <span class="tooltip-text">Header 1</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="h2" class="fa fa-header">2</button>
-                    <span class="tooltiptext">Header 2</span>
+                    <span class="tooltip-text">Header 2</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="h3" class="fa fa-header">3</button>
-                    <span class="tooltiptext">Header 3</span>
+                    <span class="tooltip-text">Header 3</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="h4" class="fa fa-header">4</button>
-                    <span class="tooltiptext">Header 4</span>
+                    <span class="tooltip-text">Header 4</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="h5" class="fa fa-header">5</button>
-                    <span class="tooltiptext">Header 5</span>
+                    <span class="tooltip-text">Header 5</span>
                 </div>
             </div>
         </div>
@@ -208,38 +213,23 @@
             <div class="toolbar-row">
 
                 <div class="tooltip">
-                    <button id="icon-only" class="fa fa-paw"></button>
-                    <span class="tooltiptext">Add Icon Only</span>
-                </div>
-
-                <div class="tooltip">
-                    <button id="icon-username" class="fa fa-paw"> User</button>
-                    <span class="tooltiptext">Add Icon and username (New)</span>
-                </div>
-
-                <div class="tooltip">
-                    <button id="icon-username-legacy" class="fa fa-paw"> User</button>
-                    <span class="tooltiptext">Add Icon and username (legacy)</span>
-                </div>
-
-                <div class="tooltip">
-                    <button id="username-only" class="fa fw-at"> User</button>
-                    <span class="tooltiptext">Add username only</span>
+                    <button id="mention" class="fa fa-paw"></button>
+                    <span class="tooltip-text">Add mention</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="navigation" class="fa fw-ellipsis-h">←Prev/First/Next→</button>
-                    <span class="tooltiptext">Add ←Prev/First/Next→</span>
+                    <span class="tooltip-text">Add ←Prev/First/Next→</span>
                 </div>
 
                 <div class="tooltip">
                     <button id="line" class="fa fa-window-minimize"> Divider</button>
-                    <span class="tooltiptext">Add Divider</span>
+                    <span class="tooltip-text">Add Divider</span>
                 </div>
             </div>
         </div>
     </div>
-    <div id="toolbar-dropdown" style="display:none;">
+    <div id="toolbar-style-menubar" style="display:none;">
         <div class="toolbar-column">
             Hover over buttons to show each menu
             <div>
@@ -307,10 +297,7 @@
                         <span class="arrow">▾</span>
                     </button>
                     <div class="dropdown-content">
-                        <button id="icon-only2" class="fa fa-paw"></button>
-                        <button id="icon-username2" class="fa fa-paw"> Username</button>
-                        <button id="icon-username-legacy2" class="fa fa-paw"> Username (Legacy)</button>
-                        <button id="username-only2" class="fa fa-at"> Username</button>
+                        <button id="mention2" class="fa fa-paw"></button>
                         <button id="navigation2" class="fa fa-ellipsis-h">←Prev/First/Next→</button>
                         <button id="line2" class="fa fa-window-minimize"> Divider</button>
                     </div>
@@ -335,6 +322,21 @@
     </div>
 </div>
 
-<footer></footer>
+<footer>
+
+    <div id="sync-button" class="button checkbox">
+        <input type="checkbox" id="sync-scroll-checkbox">
+        <label for="sync-scroll-checkbox">Sync scroll</label>
+    </div>
+
+    <div id="toolbar-style-button" class="button checkbox"><input type="checkbox" id="toolbar-style-checkbox"><label
+            for="toolbar-style-checkbox">Advanced Toolbar</label></div>
+    <div id="github">
+        <a href="https://github.com/StrawBatDev/JournAffinity">
+            <img src="image/GitHub-Mark-Light-32px.webp" alt="GitHub">
+        </a>
+    </div>
+
+</footer>
 </body>
 </html>

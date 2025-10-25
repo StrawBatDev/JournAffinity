@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <title>Mention Options Grid</title>
+</head>
+<body>
+
+<header>
+    <h1>Mention Style</h1>
+</header>
+
+<div class="toolbar header">
+    <input type="text" id="username" placeholder="Enter username">
+</div>
+
+<div class="mention-grid-container">
+    <div class="mention-grid">
+        <div class="option" data-type="0"></div>
+        <div class="option" data-type="1"></div>
+        <div class="option" data-type="2"></div>
+        <div class="option" data-type="3"></div>
+    </div>
+</div>
+
+<script>
+    const usernameInput = document.getElementById('username');
+    const options = document.querySelectorAll('.option');
+
+    function updatePreviews() {
+        const user = usernameInput.value.trim() || 'Username';
+
+        options.forEach(div => {
+            const type = parseInt(div.dataset.type);
+
+            switch (type) {
+                case 0:
+                    div.textContent = user;
+                    break;
+                case 1:
+                    div.innerHTML = `<span class="fa-mention"><span class="fa-username"></span><img src="https://a.facdn.net/${user}.gif" alt="${user}" class="fa-icon" onerror="this.style.display='none'"></span>`;
+                    break;
+                case 2:
+                    div.innerHTML = `<span class="fa-mention"><img src="https://a.facdn.net/${user}.gif" alt="${user}" class="fa-icon" onerror="this.style.display='none'"><span class="fa-username">${user}</span></span>`;
+                    break;
+                case 3:
+                    div.innerHTML = `<span class="fa-mention"><span class="fa-username">${user}</span><img src="https://a.facdn.net/${user}.gif" alt="${user}" class="fa-icon" onerror="this.style.display='none'"></span>`;
+                    break;
+            }
+        });
+    }
+
+    usernameInput.addEventListener('input', updatePreviews);
+    updatePreviews();
+
+    // Click handler for inserting text
+    options.forEach(div => {
+        div.addEventListener('click', () => {
+            const user = usernameInput.value.trim() || 'Username';
+            const type = parseInt(div.dataset.type);
+            let mention = '';
+
+            switch (type) {
+                case 0:
+                    mention = `@${user}`;
+                    break;
+                case 1:
+                    mention = `:${user}icon:`;
+                    break;
+                case 2:
+                    mention = `:icon${user}:`;
+                    break;
+                case 3:
+                    mention = `@${user}:${user}icon:`;
+                    break;
+            }
+
+            // Example: send to Monaco editor or console log for now
+            console.log('Insert text:', mention);
+
+            sendMentionToOpener(mention)
+        });
+
+        function sendMentionToOpener(mention) {
+            if (window.opener && !window.opener.closed) {
+                const event = new CustomEvent('mentionSelected', { detail: mention });
+                window.opener.dispatchEvent(event);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 let colorPickerWindow = null;
 
-export function openColorPicker(editor, tag) {
+export function openColorPicker() {
     if (colorPickerWindow && !colorPickerWindow.closed) {
         colorPickerWindow.focus();
     } else {

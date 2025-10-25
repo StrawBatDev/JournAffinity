@@ -7,6 +7,13 @@ export const SUPPORTED_TAGS = [
     'color'
 ];
 
+export const MENTION_PATTERNS = [
+    /^@(\w+)$/,                     // @username
+    /^:(\w+)icon:$/,                // :usernameicon:
+    /^:icon(\w+):$/,                // :iconusername:
+    /^@([a-zA-Z0-9_-]+):\1icon:/,   // usernameicon:@username
+];
+
 export const TAG_PATTERN = [
     '\\[',          // opening bracket
     '/?',           // optional slash

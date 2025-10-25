@@ -1,0 +1,95 @@
+.color-grid-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 30px);
+    gap: 2px;
+}
+
+.color-swatch {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.15s ease, border 0.15s ease;
+}
+
+.color-swatch:hover {
+    border: 2px solid var(--color-black);
+    transform: scale(1.5);
+    z-index: 2;
+}
+
+.color-preview {
+    width: 120px;
+    height: 32px;
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-panel-bg);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.15s ease, color 0.15s ease;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+}
+
+.option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    cursor: pointer;
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-grey-2);
+    transition: transform 0.15s ease, outline-color 0.15s ease;
+}
+
+.option:hover {
+    outline: 2px solid var(--color-accent);
+    transform: scale(1.05);
+}
+
+.fa-mention {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fa-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+}
+
+.mention-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    width: 100%;
+}
+
+.mention-grid-container {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
