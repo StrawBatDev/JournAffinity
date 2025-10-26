@@ -1,7 +1,7 @@
 import * as editorConfig from "../constants/editorConfig";
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/+esm';
 import registerToolbarButtons from "../toolbar/toolbar";
-import {convertBbcodeToHtml} from "../preview/preview";
+import {updateEditorPreview} from "../preview/preview";
 import {registerCopyButton, registerEditorDivider, registerResetButton} from "./editor";
 import {registerYoutubeWrapperClick} from "../preview/youtubeWrapper";
 import {wrapOrInsertTag} from "./wrapOrInsertTag";
@@ -94,7 +94,7 @@ function registerOnDidChangeModelContent(editor, hasEdited, saveLastContent) {
         let changed = editor.getValue() !== editorConfig.DEFAULT_INPUT;
         if (changed) hasEdited(true);
         const value = editor.getValue();
-        convertBbcodeToHtml(value).catch(err => {
+        updateEditorPreview(value).catch(err => {
             console.error(err);
         });
         saveLastContent(value);

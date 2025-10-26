@@ -5,6 +5,7 @@ import * as localStorage from "../constants/localStorage";
 import {openColorPicker} from "../modal/colorPicker";
 import {openMentionPicker} from "../modal/mentionPicker";
 import {saveScrollBarSettings, saveToolbarStyleSettings} from "../load/load";
+import {openNavigationPicker} from "../modal/navigationPicker";
 
 function registerToolbarButtons(editor) {
     const toolbarActions = {
@@ -50,6 +51,8 @@ function registerToolbarButtons(editor) {
         'color2': openColorPicker,
         'mention': openMentionPicker,
         'mention2': openMentionPicker,
+        'navigation': openNavigationPicker,
+        'navigation2': openNavigationPicker,
 
         'h1': () => wrapOrInsertTag(editor, 'h1'),
         'h2': () => wrapOrInsertTag(editor, 'h2'),
@@ -76,17 +79,40 @@ function registerToolbarButtons(editor) {
         if (el) el.addEventListener('click', action);
     });
 
+    // TODO - Consider using message instead of custom event
     window.addEventListener('colorSelected', (e) => {
-        const color = e.detail;
-        if (!color) return;
-        wrapOrInsertTag(editor, `color=${color}`);
+        onColorSelected(editor, e)
+    });
+    // TODO - Consider using message instead of custom event
+    window.addEventListener('mentionSelected', (e) => {
+        onMentionSelected(editor, e)
     });
 
-    window.addEventListener('mentionSelected', (e) => {
-        const mention = e.detail;
-        if (!mention) return;
-        wrapOrInsertTag(editor, mention);
+    window.addEventListener('message', (e) => {
+        if (!e.data) return;
+        if (e.data.type === 'navigationLinksSelected') {
+            onNavigationSelected(editor, e);
+        }
     });
+}
+
+function onColorSelected(editor, e) {
+    const color = e.detail;
+    if (!color) return;
+    wrapOrInsertTag(editor, `color=${color}`);
+}
+
+function onMentionSelected(editor, e) {
+    const mention = e.detail;
+    if (!mention) return;
+    wrapOrInsertTag(editor, mention);
+}
+
+function onNavigationSelected(editor, e) {
+    console.log('Received message:', e.data);
+    const { prevId, firstId, nextId } = e.data.data;
+    console.log('Inserting:', prevId, firstId, nextId);
+    wrapOrInsertTag(editor, `[${prevId},${firstId},${nextId}]`);
 }
 
 export default registerToolbarButtons

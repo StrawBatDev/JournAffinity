@@ -124,6 +124,38 @@ header,
     align-items: center;
 }
 
+/* Each row (label + input) */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* space between label and input */
+    width: 100%;
+}
+
+/* Labels take up consistent width for perfect alignment */
+.input-group label {
+    flex: 0 0 var(--label-width-inline); /* fixed label width */
+    text-align: right;
+    color: var(--color-text-primary);
+}
+
+/* Inputs fill remaining space */
+.input-group input {
+    flex: 1;
+    padding: var(--space-sm) var(--space-sm);
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-grey-2);
+    color: var(--color-panel-fore);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+/* Optional: better focus feedback */
+.input-group input:focus {
+    outline: 2px solid var(--color-accent, #66aaff);
+    outline-offset: 1px;
+}
+
 header {
     display: flex;
     justify-content: space-between;

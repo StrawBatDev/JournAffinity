@@ -5,7 +5,6 @@ import {DEFAULT_INPUT} from "./constants/editorConfig";
 import {initScrollBarSync, initToolBarStyleSync} from "./toolbar/toolbar";
 import {loadLastContent, loadScrollBarSettings, loadToolBarSettings, saveLastContent} from "./load/load";
 import {disableMonacoLanguageWorker} from "./editor/monaco";
-import {wrapOrInsertTag} from "./editor/wrapOrInsertTag";
 
 
 const init = () => {

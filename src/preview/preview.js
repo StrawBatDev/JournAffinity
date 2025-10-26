@@ -145,7 +145,7 @@ function parseYouTube(src) {
     });
 }
 
-function preview(src) {
+export function preview(src) {
     if (!src) return "";
     src = parseYouTube(src)
     bbcode.forEach((bbcode) => {
@@ -154,7 +154,7 @@ function preview(src) {
     return src
 }
 
-export let convertBbcodeToHtml = async (input) => {
+export let updateEditorPreview = async (input) => {
     let html = await new Promise((resolve) => {
         resolve((preview(input)));
     });

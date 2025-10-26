@@ -1,5 +1,5 @@
 import * as editorConfig from "../constants/editorConfig";
-import {MENTION_PATTERNS} from "../constants/editorConfig";
+import {MENTION_PATTERNS, NAVIGATION_PATTERN} from "../constants/editorConfig";
 
 export function wrapOrInsertTag(editor, tag) {
     const model = editor.getModel();
@@ -26,6 +26,24 @@ export function wrapOrInsertTag(editor, tag) {
             editor.focus();
             return; // stop further processing
         }
+    }
+
+    // Check if the tag matches the bracketed link pattern
+    if (tag.match(NAVIGATION_PATTERN)) {
+        // Example: insert the bracketed link as-is
+        editor.executeEdits('preview', [{
+            range: selection,
+            text: tag,
+            forceMoveMarkers: true
+        }]);
+
+        const pos = selection.getStartPosition();
+        editor.setPosition({
+            lineNumber: pos.lineNumber,
+            column: pos.column + tag.length
+        });
+        editor.focus();
+        return;
     }
 
     // Extract the base tag (before any =, e.g., color=red -> color)

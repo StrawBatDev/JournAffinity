@@ -14,6 +14,8 @@ export const MENTION_PATTERNS = [
     /^@([a-zA-Z0-9_-]+):\1icon:/,   // usernameicon:@username
 ];
 
+export const NAVIGATION_PATTERN = /\[\s*([0-9\-]+)\s*,\s*([0-9\-]+)\s*,\s*([0-9\-]+)\s*\]/;
+
 export const TAG_PATTERN = [
     '\\[',          // opening bracket
     '/?',           // optional slash

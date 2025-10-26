@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <title>Insert Navigation Bar</title>
+    <style>
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            padding: var(--space-lg);
+            box-sizing: border-box;
+        }
+
+        input.valid {
+            border-color: lawngreen;
+            background-color: #013d01; /* dark green, good for dark themes */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Insert Navigation Bar</h1>
+</header>
+
+<div class="toolbar header">
+    <h2>Copy and paste submission furaffinity.net links in series into the fields below.<br><br>
+        E.g. https://www.furaffinity.net/view/61209785/</h2>
+</div>
+
+<div class="modal-container">
+
+    <div class="input-group">
+        <label for="firstInput">First:</label>
+        <input id="firstInput" type="text" placeholder="Enter first post"/>
+    </div>
+
+    <div class="input-group">
+        <label for="prevInput">Previous:</label>
+        <input id="prevInput" type="text" placeholder="Enter previous post, leave blank if this post is the first"/>
+    </div>
+
+    <div class="input-group">
+        <label for="nextInput">Next:</label>
+        <input id="nextInput" type="text" placeholder="Enter next post, leave blank if this is the last."/>
+    </div>
+
+    <div class="input-group">
+        <label for="nextInput"></label>
+        <button id="shiftBtn"><b>Move Next → Previous</b> and <b>clear the Next field</b></button>
+    </div>
+
+    <div class="input-group">
+        <label>Preview:</label>
+        <div class="preview" id="preview"></div>
+    </div>
+
+
+</div>
+<div class="toolbar footer">
+    <button id="insertBtn">Insert</button>
+</div>
+<script type="module">
+    import {preview} from "/src/preview/preview.js";
+    import DOMPurify from "dompurify";
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const firstInput = document.getElementById('firstInput');
+        const prevInput = document.getElementById('prevInput');
+        const nextInput = document.getElementById('nextInput');
+        const insertBtn = document.getElementById('insertBtn');
+        const shiftBtn = document.getElementById('shiftBtn');
+        const previewDiv = document.getElementById('preview');
+
+        const regex = /https?:\/\/www\.furaffinity\.net\/view\/(\d+)/i;
+
+        // --- Validation helpers ---
+        const isValidFAUrl = (url) => regex.test(url.trim());
+
+        const updateInputValidation = (input) => {
+            if (isValidFAUrl(input.value)) input.classList.add('valid');
+            else input.classList.remove('valid');
+        };
+
+        const extractViewId = (url) => {
+            const match = url.match(regex);
+            return match ? match[1] : '-';
+        };
+
+        const generateBracketedString = () => {
+            const prev = extractViewId(prevInput.value.trim());
+            const first = extractViewId(firstInput.value.trim());
+            const next = extractViewId(nextInput.value.trim());
+            return `[${prev},${first},${next}]`;
+        };
+
+        const saveInputs = () => {
+            localStorage.setItem('first', firstInput.value.trim());
+            localStorage.setItem('prev', prevInput.value.trim());
+            localStorage.setItem('next', nextInput.value.trim());
+        };
+
+        const updatePreview = () => {
+            const bbcode = generateBracketedString();
+            const html = preview(bbcode);
+            previewDiv.innerHTML = DOMPurify.sanitize(html);
+
+            previewDiv.querySelectorAll('a').forEach(link => {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            });
+
+            saveInputs();
+        };
+
+        // --- Event Listeners ---
+
+        [firstInput, prevInput, nextInput].forEach(input => {
+            input.addEventListener('input', () => {
+                updateInputValidation(input);
+                updatePreview();
+            });
+        });
+
+        shiftBtn.addEventListener('click', () => {
+            const nextValue = nextInput.value.trim();
+            if (nextValue) {
+                prevInput.value = nextValue;
+                nextInput.value = '';
+            }
+            updateInputValidation(prevInput);
+            updateInputValidation(nextInput);
+            updatePreview();
+        });
+
+        insertBtn.addEventListener('click', () => {
+
+            const prevId = extractViewId(prevInput.value.trim());
+            const firstId = extractViewId(firstInput.value.trim());
+            const nextId = extractViewId(nextInput.value.trim());
+
+            if (window.opener) {
+                window.opener.postMessage({
+                    type: 'navigationLinksSelected',
+                    data: {prevId, firstId, nextId}
+                }, '*');
+            } else {
+                alert('No opener window detected.');
+            }
+        });
+
+        // --- Initialization ---
+        firstInput.value = localStorage.getItem('first') || '';
+        prevInput.value = localStorage.getItem('prev') || '';
+        nextInput.value = localStorage.getItem('next') || '';
+
+        [firstInput, prevInput, nextInput].forEach(updateInputValidation);
+        updatePreview();
+    });
+</script>
+
+</body>
+</html>
