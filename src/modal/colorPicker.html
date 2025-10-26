@@ -85,6 +85,8 @@
                 // TODO - Consider using message instead of custom event
                 const event = new CustomEvent('colorSelected', {detail: color});
                 window.opener.dispatchEvent(event);
+            } else {
+                alert("This window has been orphaned and can't find its original editor window. Please close this window and re-open it.");
             }
         }
 

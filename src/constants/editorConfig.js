@@ -27,6 +27,8 @@ export const TAG_PATTERN = [
 export const DEFAULT_INPUT = `[h1]JournAffinity v1.0[/h1]
 Hi, I am :strawbaticon: and this is an [b]WYSIWYG editor[/b] I made to help you write journals and post descriptions on Furaffinity.net!
 
+If you like this software,  [b][url=https://ko-fi.com/strawbat$0][color=orange]consider supporting my work and make a donation to my Ko-Fi. Thank you[/color][/url][/b]
+
 [h2]Dorky stuff translated for the layman:[/h2]
 [b]Furaffinity.net[/b] uses what are called [b]BBCodes[/b] for formatting text; 
 BBCode is a lightweight markup language used on many online forums and bulletin boards to format posts.
@@ -36,11 +38,18 @@ This text is then previewed using CSS (Shorthand for 'Cascading Style Sheets'), 
 
 What you see in the preview should [i]approximate[/i] what you will see on Furaffinity.net when you post.
 
+Things left to add:
+- Link url button for inserting links
+- Swap showing windows in favour of in page dialogs; this should fix the 'orphaning' issue which may be annoying to users.
+- Add a preview to show submissions when inserting the sequence navigation links.
+- Fix the preview of youtube videos, the thumbnails are misaligned. Functional, but not acurate.
+
 [h2]Sauces:[/h2]
 The BBCodes that this editor can preview have been based on this [url=https://www.furaffinity.net/journal/8342081/]journal[/url] and [url=https://www.furaffinity.net/help/#tags-and-codes]Furaffinity.net's official documentation[/url]
 
 This is forked from another project here: https://markdownlivepreview.com
 
+-----
 [h1]Examples[/h1]
 [b]Bold[/b]
 [i]Italic[/i]
@@ -69,7 +78,7 @@ Text Alignment:
 
 Combinations:
 [i][b]Kamina - "We're gonna combine!"[/b][/i]
-[b][url=https://www.youtube.com/watch?v=CzVeai1P1H0$0][color=COLORNAME]Simon - "They're going to combine?!"[/color][/url][/b]
+[b][url=https://www.youtube.com/watch?v=CzVeai1P1H0$0][color=orange]Simon - "They're going to combine?!"[/color][/url][/b]
     
 Video links (Only in journals!)
 [yt]https://www.youtube.com/watch?v=CzVeai1P1H0[/yt]
