@@ -1,5 +1,4 @@
-import * as editorConfig from "../constants/editorConfig";
-import {MENTION_PATTERNS, NAVIGATION_PATTERN} from "../constants/editorConfig";
+import {MENTION_PATTERNS, NAVIGATION_PATTERN, SUPPORTED_TAGS} from "./editor";
 
 export function wrapOrInsertTag(editor, tag) {
     const model = editor.getModel();
@@ -48,7 +47,7 @@ export function wrapOrInsertTag(editor, tag) {
 
     // Extract the base tag (before any =, e.g., color=red -> color)
     const baseTag = tag.split('=')[0];
-    if (!editorConfig.SUPPORTED_TAGS.includes(baseTag)) return; // ignore unsupported tags
+    if (!SUPPORTED_TAGS.includes(baseTag)) return; // ignore unsupported tags
 
     // Special case for literal dashes
     if (tag === '-----') {

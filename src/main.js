@@ -1,10 +1,8 @@
-import 'github-markdown-css/github-markdown-light.css';
-import {setupEditor} from "./editor/setupEditor";
-import {presetValue} from "./editor/editor";
-import {DEFAULT_INPUT} from "./constants/editorConfig";
-import {initScrollBarSync, initToolBarStyleSync} from "./toolbar/toolbar";
-import {loadLastContent, loadScrollBarSettings, loadToolBarSettings, saveLastContent} from "./load/load";
-import {disableMonacoLanguageWorker} from "./editor/monaco";
+import { setupEditor } from "./setupEditor.js";
+import { presetValue } from "./editor.js";
+import { initScrollBarSync, initToolBarStyleSync } from "./toolbar.js";
+import { loadLastContent, loadScrollBarSettings, loadToolBarSettings, saveLastContent } from "./load.js";
+import { disableMonacoLanguageWorker } from "./monaco.js";
 
 
 const init = () => {

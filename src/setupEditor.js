@@ -1,19 +1,24 @@
-import * as editorConfig from "../constants/editorConfig";
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/+esm';
-import registerToolbarButtons from "../toolbar/toolbar";
-import {updateEditorPreview} from "../preview/preview";
-import {registerCopyButton, registerEditorDivider, registerResetButton} from "./editor";
-import {registerYoutubeWrapperClick} from "../preview/youtubeWrapper";
-import {wrapOrInsertTag} from "./wrapOrInsertTag";
+import registerToolbarButtons from "./toolbar.js";
+import {updateEditorPreview} from "./preview.js";
+import {
+    BBCODE_MONACO_LANGUAGE_ID, DEFAULT_INPUT,
+    registerCopyButton,
+    registerEditorDivider,
+    registerResetButton, SUPPORTED_TAGS,
+    TAG_PATTERN
+} from "./editor.js";
+import {registerYoutubeWrapperClick} from "./youtubeWrapper.js";
+import {wrapOrInsertTag} from "./wrapOrInsertTag.js";
 
 
 function registerEditor() {
-    monaco.languages.register({id: editorConfig.BBCODE_MONACO_LANGUAGE_ID});
-    monaco.languages.setMonarchTokensProvider(editorConfig.BBCODE_MONACO_LANGUAGE_ID, {
+    monaco.languages.register({id: BBCODE_MONACO_LANGUAGE_ID});
+    monaco.languages.setMonarchTokensProvider(BBCODE_MONACO_LANGUAGE_ID, {
         defaultToken: '',
         tokenizer: {
             root: [
-                [new RegExp(editorConfig.TAG_PATTERN), 'keyword'],
+                [new RegExp(TAG_PATTERN), 'keyword'],
                 [/\[[^\]]+]/, 'identifier'],
                 [/./, '']
             ]
@@ -22,11 +27,11 @@ function registerEditor() {
 }
 
 function registerCompletionItemProvider() {
-    monaco.languages.registerCompletionItemProvider(editorConfig.BBCODE_MONACO_LANGUAGE_ID, {
+    monaco.languages.registerCompletionItemProvider(BBCODE_MONACO_LANGUAGE_ID, {
         triggerCharacters: ['['],
         provideCompletionItems: (model, position) => {
             return {
-                suggestions: editorConfig.SUPPORTED_TAGS.map(tag => ({
+                suggestions: SUPPORTED_TAGS.map(tag => ({
                     label: tag,
                     kind: monaco.languages.CompletionItemKind.Snippet,
                     // Only insert the tag name; user already typed '['
@@ -63,7 +68,7 @@ function createEditor() {
 
     return monaco.editor.create(document.querySelector('#editor'), {
         fontSize:/*--------------*/ 14,
-        language:/*--------------*/ editorConfig.BBCODE_MONACO_LANGUAGE_ID,
+        language:/*--------------*/ BBCODE_MONACO_LANGUAGE_ID,
         minimap:/*---------------*/ {enabled: false},
         scrollBeyondLastLine:/*--*/ false,
         automaticLayout:/*-------*/ true,
@@ -91,7 +96,7 @@ function registerKeyboardShortcuts(editor) {
 
 function registerOnDidChangeModelContent(editor, hasEdited, saveLastContent) {
     editor.onDidChangeModelContent(() => {
-        let changed = editor.getValue() !== editorConfig.DEFAULT_INPUT;
+        let changed = editor.getValue() !== DEFAULT_INPUT;
         if (changed) hasEdited(true);
         const value = editor.getValue();
         updateEditorPreview(value).catch(err => {

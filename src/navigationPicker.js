@@ -5,7 +5,7 @@ export function openNavigationPicker() {
         navigationPickerWindow.focus();
     } else {
         navigationPickerWindow = window.open(
-            '/src/modal/navigationPicker.html', // new HTML file
+            './src/navigationPicker.html', // relative to base
             'Navigation Picker',
             'width=500,height=450,resizable=yes'
         );

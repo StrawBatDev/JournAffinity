@@ -5,7 +5,7 @@ export function openMentionPicker() {
         mentionPickerWindow.focus();
     } else {
         mentionPickerWindow = window.open(
-            '/src/modal/mentionPicker.html', // update path
+            './src/mentionPicker.html', // update path
             'Mention Picker',
             'width=300,height=500,resizable=yes'
         );

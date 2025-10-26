@@ -166,7 +166,7 @@
     transform: translate(-50%, -50%);
     width: 64px;
     height: 64px;
-    background: url('../image/play.png') no-repeat center center;
+    background: url('/public/image/play.png') no-repeat center center;
     background-size: contain;
     pointer-events: none;
 }

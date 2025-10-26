@@ -1,58 +1,348 @@
+<!--index.html-->
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+    <base href="/JournAffinity/">
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-ML2M5Z4B');</script>
+    <!-- End Google Tag Manager -->
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="content-language" content="en">
-    <meta http-equiv="content-script-type" content="text/javascript">
-    <meta http-equiv="content-style-type" content="text/css">
-    <meta name="description" content="This is the online markdown editor with live preview.">
+    <meta http-equiv="content-type" content="text/javascript">
+    <meta http-equiv="content-type" content="text/css">
+    <meta name="description" content="This is the online BBCode editor with live preview for Furaffinity.net.">
 
-    <link rel="stylesheet" type="text/css" href="css/style.css?v=1.10.1">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <title>Markdown Live Preview</title>
-    <script type="module" crossorigin src="/assets/index-DXVBtf7Z.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C-vOJggO.css">
-  </head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-77C1GEG9C8"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <link rel="icon" type="image/png" href="/JournAffinity/assets/favicon-BZMpDg9Q.png">
+    <title>JournAffinity</title>
+  <script type="module" crossorigin src="/JournAffinity/assets/index-urbJVhN6.js"></script>
+  <link rel="stylesheet" crossorigin href="/JournAffinity/assets/index-BeWQ2RtG.css">
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-ML2M5Z4B"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 
-    gtag('config', 'G-77C1GEG9C8');
-  </script>
-
-  <body>
-
-    <header>
-        <div id="menu-items">
-            <div><a href="/">Markdown Live Preview</a></div>
-            <div id="reset-button"><a href="#">Reset</a></div>
-            <div id="copy-button"><a href="#">Copy</a></div>
-            <div id="sync-button"><input type="checkbox" id="sync-scroll-checkbox"><label for="sync-scroll-checkbox">Sync scroll</label></div>
+<header>
+    <div id="menu-items">
+        <div>
+            <a href="https://www.furaffinity.net/">
+                <img src="/JournAffinity/image/fa_logo.webp" class="site-logo" alt="Logo" sizes="">
+            </a>
         </div>
-        <div id="github"><a href="https://github.com/tanabe/markdown-live-preview"><img src="image/GitHub-Mark-Light-32px.webp"></a></div>
-    </header>
+        <button id="new-journal" class="button copy"
+                onclick="window.location.href='https://www.furaffinity.net/controls/journal/'">
+            <span class="fa fa-file"></span>
+            New Journal
+        </button>
 
-    <div id="container" class="split-container">
+        <button id="copy-button" class="button copy">
+            <span class="fa fa-clipboard"></span>
+            <span class="button-text">Copy</span>
+        </button>
 
-        <div id="edit" class="column editor-pane">
-            <div id="editor-wrapper">
-                <div id="editor"></div>
+        <button id="reset-button" class="button nuke">
+            <img src="/JournAffinity/image/nuke.svg" class="svg-icon" alt="Reset button">
+        </button>
+    </div>
+
+    <div class="row-container">
+        <a href="https://ko-fi.com/strawbat" target="_blank" rel="noopener noreferrer">
+            <img id="wiggleBtn" src="/JournAffinity/assets/kofi-BxvgP0_0.png" alt="Click Me">
+        </a>
+    </div>
+</header>
+<script>
+    const button = document.getElementById('wiggleBtn');
+
+    function triggerWiggle() {
+        button.classList.add('wiggling');
+        setTimeout(() => button.classList.remove('wiggling'), 600); // Matches animation duration
+    }
+
+    // Wiggle every 3 seconds
+    setInterval(triggerWiggle, 3000);
+</script>
+<div class=toolbar id="toolbar">
+    <div id="toolbar-style-simple">
+        <div class="toolbar-column">
+            Edit
+            <div class="toolbar-row">
+
+                <div class="tooltip">
+                    <button id="undoBtn" class="fa fa-undo"></button>
+                    <span class="tooltip-text">Undo</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="redoBtn" class="fa fa-repeat"></button>
+                    <span class="tooltip-text">Redo</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="cutBtn" class="fa fa-cut"></button>
+                    <span class="tooltip-text">Cut</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="copyBtn" class="fa fa-copy"></button>
+                    <span class="tooltip-text">Copy</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="pasteBtn" class="fa fa-paste"></button>
+                    <span class="tooltip-text">Paste</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="deleteBtn" class="fa fa-eraser"></button>
+                    <span class="tooltip-text">Eraser</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="toolbar-column">
+            Text
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="bold" class="fa fa-bold"></button>
+                    <span class="tooltip-text">Bold</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="italic" class="fa fa-italic"></button>
+                    <span class="tooltip-text">Italic</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="underline" class="fa fa-underline"></button>
+                    <span class="tooltip-text">Underline</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="strikethrough" class="fa fa-strikethrough"></button>
+                    <span class="tooltip-text">Strikethrough</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="color" class="fa fa-paint-brush"></button>
+                    <span class="tooltip-text">Color</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="quote" class="fa fa-quote-left"></button>
+                    <span class="tooltip-text">Quote</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="sup" class="fa fa-arrow-up"></button>
+                    <span class="tooltip-text">Size Up</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="sub" class="fa fa-arrow-down"></button>
+                    <span class="tooltip-text">Size Down</span>
+                </div>
             </div>
         </div>
 
-        <div id="split-divider" class="split-divider"></div>
+        <div class="toolbar-column">
+            Align
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="align-left" class="fa fa-align-left"></button>
+                    <span class="tooltip-text">Align Left</span>
+                </div>
 
-        <div id="preview" class="column preview-pane">
-            <div id="preview-wrapper">
-                <div id="output" class="content markdown-body"></div>
+                <div class="tooltip">
+                    <button id="align-center" class="fa fa-align-center"></button>
+                    <span class="tooltip-text">Align Center</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="align-right" class="fa fa-align-right"></button>
+                    <span class="tooltip-text">Align Right</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar-column">
+            Headers
+            <div class="toolbar-row">
+                <div class="tooltip">
+                    <button id="h1" class="fa fa-header">1</button>
+                    <span class="tooltip-text">Header 1</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h2" class="fa fa-header">2</button>
+                    <span class="tooltip-text">Header 2</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h3" class="fa fa-header">3</button>
+                    <span class="tooltip-text">Header 3</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h4" class="fa fa-header">4</button>
+                    <span class="tooltip-text">Header 4</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="h5" class="fa fa-header">5</button>
+                    <span class="tooltip-text">Header 5</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="toolbar-column">
+            Insert
+            <div class="toolbar-row">
+
+                <div class="tooltip">
+                    <button id="mention" class="fa fa-paw"></button>
+                    <span class="tooltip-text">Add mention</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="navigation" class="fa fw-ellipsis-h">←Prev/First/Next→</button>
+                    <span class="tooltip-text">Add ←Prev/First/Next→</span>
+                </div>
+
+                <div class="tooltip">
+                    <button id="line" class="fa fa-window-minimize"> Divider</button>
+                    <span class="tooltip-text">Add Divider</span>
+                </div>
             </div>
         </div>
     </div>
+    <div id="toolbar-style-menubar" style="display:none;">
+        <div class="toolbar-column">
+            Hover over buttons to show each menu
+            <div>
+                <div class="dropdown">
+                    <button class="fa fa-file">
+                        Edit
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="undoBtn2" class="fa fa-undo"> Undo</button>
+                        <button id="redoBtn2" class="fa fa-repeat"> Redo</button>
+                        <button id="cutBtn2" class="fa fa-cut"> Cut</button>
+                        <button id="copyBtn2" class="fa fa-copy"> Copy</button>
+                        <button id="pasteBtn2" class="fa fa-paste"> Paste</button>
+                        <button id="deleteBtn2" class="fa fa-eraser"> Delete</button>
+                    </div>
+                </div>
 
-    <footer></footer>
-  </body>
+                <div class="dropdown">
+                    <button class="fa fa-font">
+                        Text
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="bold2" class="fa fa-bold" title="Bold"> Bold</button>
+                        <button id="italic2" class="fa fa-italic"> Italic</button>
+                        <button id="underline2" class="fa fa-underline"> Underline</button>
+                        <button id="strikethrough2" class="fa fa-strikethrough"> Strikethrough</button>
+                        <button id="color2" class="fa fa-paint-brush"></button>
+                        <button id="quote2" class="fa fa-quote-left"> Quote</button>
+                        <button id="sup2" class="fa fa-arrow-up"> Size up</button>
+                        <button id="sub2" class="fa fa-arrow-down"> Size down</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-align-justify">
+                        Align
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="align-left2" class="fa fa-align-left"> Left</button>
+                        <button id="align-center2" class="fa fa-align-center"> Center</button>
+                        <button id="align-right2" class="fa fa-align-right"> Right</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-header">
+                        Header
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="h1_2" class="fa fa-header">1</button>
+                        <button id="h2_2" class="fa fa-header">2</button>
+                        <button id="h3_2" class="fa fa-header">3</button>
+                        <button id="h4_2" class="fa fa-header">4</button>
+                        <button id="h5_2" class="fa fa-header">5</button>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="fa fa-plus">
+                        Insert
+                        <span class="arrow">▾</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="mention2" class="fa fa-paw"></button>
+                        <button id="navigation2" class="fa fa-ellipsis-h">←Prev/First/Next→</button>
+                        <button id="line2" class="fa fa-window-minimize"> Divider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="container" class="split-container">
+    <div id="edit" class="column editor-pane">
+        <div id="editor-wrapper">
+            <div id="editor"></div>
+        </div>
+    </div>
+
+    <div id="split-divider" class="split-divider"></div>
+
+    <div id="preview" class="column preview-pane">
+        <div id="preview-wrapper" class="fa-bbcode-container">
+            <div id="output" class="fa-bbcode-body"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+
+    <div id="sync-button" class="button checkbox">
+        <input type="checkbox" id="sync-scroll-checkbox">
+        <label for="sync-scroll-checkbox">Sync scroll</label>
+    </div>
+
+    <div id="toolbar-style-button" class="button checkbox"><input type="checkbox" id="toolbar-style-checkbox"><label
+            for="toolbar-style-checkbox">Advanced Toolbar</label></div>
+    <div id="github">
+        <a href="https://github.com/StrawBatDev/JournAffinity">
+            <img src="/JournAffinity/image/GitHub-Mark-Light-32px.webp" alt="GitHub">
+        </a>
+    </div>
+
+</footer>
+</body>
 </html>

@@ -1,11 +1,11 @@
-import {wrapOrInsertTag} from "../editor/wrapOrInsertTag";
-import * as toolbar from "../constants/toolbar";
-import Storehouse from "storehouse-js";
-import * as localStorage from "../constants/localStorage";
-import {openColorPicker} from "../modal/colorPicker";
-import {openMentionPicker} from "../modal/mentionPicker";
-import {saveScrollBarSettings, saveToolbarStyleSettings} from "../load/load";
-import {openNavigationPicker} from "../modal/navigationPicker";
+import {wrapOrInsertTag} from "./wrapOrInsertTag";
+import {openColorPicker} from "./colorPicker.js";
+import {openMentionPicker} from "./mentionPicker.js";
+import {saveScrollBarSettings, saveToolbarStyleSettings} from "./load.js";
+import {openNavigationPicker} from "./navigationPicker.js";
+
+export const simpleToolbar = document.getElementById('toolbar-style-simple');
+export const dropdownToolbar = document.getElementById('toolbar-style-menubar');
 
 function registerToolbarButtons(editor) {
     const toolbarActions = {
@@ -138,7 +138,7 @@ export let initToolBarStyleSync = (current, update) => {
         let checked = event.currentTarget.checked;
         update(checked);
         saveToolbarStyleSettings(checked);
-        toolbar.simpleToolbar.style.display = checked ? 'none' : 'flex';
-        toolbar.dropdownToolbar.style.display = checked ? 'flex' : 'none';
+        simpleToolbar.style.display = checked ? 'none' : 'flex';
+        dropdownToolbar.style.display = checked ? 'flex' : 'none';
     });
 };

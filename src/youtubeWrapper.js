@@ -1,4 +1,3 @@
-
 export function registerYoutubeWrapperClick() {
     document.addEventListener('click', (e) => {
         const wrapper = e.target.closest('.youtubeWrapper');
