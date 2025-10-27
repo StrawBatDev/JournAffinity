@@ -1,9 +1,12 @@
-import { setupEditor } from "./setupEditor.js";
-import { presetValue } from "./editor.js";
-import { initScrollBarSync, initToolBarStyleSync } from "./toolbar.js";
-import { loadLastContent, loadScrollBarSettings, loadToolBarSettings, saveLastContent } from "./load.js";
-import { disableMonacoLanguageWorker } from "./monaco.js";
-
+import {setupEditor} from "./setupEditor.js";
+import {presetValue} from "./editor.js";
+import {initScrollBarSync, initToolBarStyleSync} from "./toolbar.js";
+import {loadLastContent, loadScrollBarSettings, loadToolBarSettings, saveLastContent} from "./load.js";
+import {disableMonacoLanguageWorker} from "./monaco.js";
+import '../css/theme.css';
+import '../css/style.css';
+import '../css/preview.css';
+import '../css/modal.css';
 
 const init = () => {
     disableMonacoLanguageWorker()
