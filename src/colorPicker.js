@@ -5,7 +5,7 @@ export function openColorPicker() {
         colorPickerWindow.focus();
     } else {
         colorPickerWindow = window.open(
-            './src/colorPicker.html',
+            'src/colorPicker.html',
             'Color Picker',
             'width=300,height=400,resizable=yes'
         );
