@@ -5,7 +5,7 @@ export function openNavigationPicker() {
         navigationPickerWindow.focus();
     } else {
         navigationPickerWindow = window.open(
-            './src/navigationPicker.html', // relative to base
+            'src/navigationPicker.html',
             'Navigation Picker',
             'width=500,height=450,resizable=yes'
         );
