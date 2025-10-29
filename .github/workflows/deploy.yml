@@ -34,8 +34,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Add CNAME file
-        run: echo "journaffinity.net" > dist/CNAME
+# Un-comment when using a custom domain name from cloudflare
+#      - name: Add CNAME file
+#        run: echo "journaffinity.net" > dist/CNAME
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
