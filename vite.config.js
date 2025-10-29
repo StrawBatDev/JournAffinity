@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
     // base: '/JournAffinity/', // Use this base when *not* using a custom domain)
-    base: '/' // Use this base when using a custom domain.
+    base: '/', // Use this base when using a custom domain.
     build: {
         outDir: 'dist',
         rollupOptions: {
